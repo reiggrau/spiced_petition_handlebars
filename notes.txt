@@ -1,0 +1,31 @@
+
+
+1. server.js
+- routes
+- set cookie after signature
+
+2. Handlebar templates
+
+
+
+
+
+// DATA LAYER
+1. Database (should have table):
+Signatures:
+- first_name (string)
+- last_name (string)
+- signature ()
+
+2. db.js
+Functions:
+- createSignature (to store signature to database)
+- getAllSignatures (to show on signatures page)
+- 
+
+
+// STEPS
+0. Create server
+1. Create main page handelbars
+2. Create thank you handelbars
+3. Make css
