@@ -25,7 +25,7 @@ Functions:
 
 
 // STEPS
-0. Create server
+0. Create basic server
 1. Create main page handelbars
 2. Create thank you handelbars
 3. Make css

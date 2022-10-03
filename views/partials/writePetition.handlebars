@@ -1,0 +1,15 @@
+<div class="petitionDiv" id="writeDiv">
+    <form action="/" method="POST">
+        <div>
+            <input name="first_name" required placeholder="First Name" />
+            <input name="last_name" required placeholder="Last Name" />
+        </div>
+        <textarea id="textArea" rows="20" cols="60"></textarea>
+        <!-- same for last name -->
+
+        <!-- placeholder for the signature, before implementing the actual canvas thing -->
+        <input type="hidden" name="signature" value="data:image/png;base64,hello" />
+
+        <input type="submit" value="Add Your Name" />
+    </form>
+</div>
