@@ -1,15 +1,22 @@
 <div class="petitionDiv" id="writeDiv">
+    <h2>Make a petition</h2>
+    <p>It is the constitutional right of every citizen of our country to have their voice heard in equality of opportunity. For this reason, any citizen can submit a petition to the public tribune, where it can receive the support or opposition of other citizens.</p>
+    <p>Petitions with the most support are sent to the house of representatives and put to vote, and if approved, the process of transforming the petition into a functional law begins.</p>
+    <p>Bear in mind though that with the right to make one's voice heard comes the duty to respect the rights of others, so every petition must be in accordance with all universal and constitutional rights.</p>
     <form action="/" method="POST">
         <div>
+            <h3>Write your name:</h3>
             <input name="first_name" required placeholder="First Name" />
             <input name="last_name" required placeholder="Last Name" />
+            <h3>Write your petition:</h3>
+            <input type="text" id="petitionTxt" name="petition" required placeholder="Write your petition here." />
+            <!-- same for last name -->
+
+            <!-- placeholder for the signature, before implementing the actual canvas thing -->
+            <h3>Add your signature:</h3>
+            <input type="hidden" name="signature" value="data:image/png;base64,hello" />
+
+            <input type="submit" value="Submit" />
         </div>
-        <textarea id="textArea" rows="20" cols="60"></textarea>
-        <!-- same for last name -->
-
-        <!-- placeholder for the signature, before implementing the actual canvas thing -->
-        <input type="hidden" name="signature" value="data:image/png;base64,hello" />
-
-        <input type="submit" value="Add Your Name" />
     </form>
 </div>

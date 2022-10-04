@@ -7,6 +7,8 @@ const express = require("express"); // require express
 
 const app = express(); // create a new instance of express
 
+const cookieParser = require("cookie-parser");
+
 // Handlebars setup
 const { engine } = require("express-handlebars");
 app.engine("handlebars", engine());
@@ -15,29 +17,77 @@ app.set("view engine", "handlebars");
 // Database
 const db = require("./db");
 
-db.getAllSignatures().then((rows) => {
-    console.log("Checkpoint 1:", rows);
-});
-// ...
-
 // STATIC
 
 app.use(express.static(path.join(__dirname, "public")));
+
+// STARTUP
+
+db.getAllPetitions().then((rows) => {
+    console.log("Petitions:", rows);
+});
+db.getAllRepresentatives().then((rows) => {
+    console.log("Representatives:", rows);
+});
 
 // MIDDLEWARES
 
 app.use(express.urlencoded({ extended: false }));
 
+app.use(cookieParser());
+
 // BODY
-// Petition page (main page)
+// Main page (petition)
 app.get("/", (req, res) => {
+    console.log("req.cookies :", req.cookies);
+
+    if (req.cookies.hasSigned) {
+        res.redirect("/thankyou");
+    }
+
     res.render("welcome", {
         title: "Petition",
     });
 });
 
-// Petition page
+app.get("/thankyou", (req, res) => {
+    res.render("thankyou", {
+        title: "Petition",
+    });
+});
+
+app.post("/", (req, res) => {
+    // Check if the input is correct: first_name, last_name, signature
+    //      STORE in database
+    //      SET a cookie
+    //      redirect to thank-you page
+    // Else display error message
+    //      where is the error?
+    //      show the form again with error message
+    console.log("Checkpoint 2. req.body:", req.body);
+
+    db.createPetition(req.body.first_name, req.body.last_name, req.body.petition)
+        .then((result) => {
+            console.log("Checkpoint 3.");
+            db.getAllPetitions().then((rows) => {
+                console.log("Petitions:", rows);
+            });
+            res.cookie("hasSigned", true);
+            res.redirect("/thankyou");
+        })
+        .catch((err) => {
+            console.log("err: ", err);
+        });
+});
+
+// Petitions
 app.get("/petitions", (req, res) => {
+    res.render("petitions", {
+        title: "Petition",
+    });
+});
+
+app.get("/petitions/login", (req, res) => {
     res.render("petitions", {
         title: "Petition",
     });
@@ -53,10 +103,10 @@ app.post("/petitions", (req, res) => {
     //      show the form again with error message
     console.log("Checkpoint 2. req.body:", req.body);
 
-    db.createSignature(req.body.first_name, req.body.last_name, req.body.quote)
+    db.createRepresentative(req.body.first_name, req.body.last_name, req.body.image_url, req.body.quote)
         .then((result) => {
-            console.log("Checpoint 3.");
-            db.getAllSignatures().then((rows) => {
+            console.log("Checkpoint 3.");
+            db.getAllRepresentatives().then((rows) => {
                 console.log("Representatives:", rows);
             });
             res.redirect("/");

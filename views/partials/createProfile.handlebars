@@ -4,23 +4,19 @@
     <form action="/petitions" method="POST">
         <div class="stepDiv">
             <h3>Write your name:</h3>
-            <p>Name yourself before your rivals do it for you.</p>
             <input name="first_name" required placeholder="First Name" />
             <input name="last_name" required placeholder="Last Name" />
         </div>
         <div class="stepDiv">
             <h3>Add a profile picture:</h3>
-            <p>87% of world leaders are humans, so better look like one.</p>
-            <input type="url" name="profile_url" placeholder="Image URL" />
+            <input type="url" name="image_url" required placeholder="Image URL" />
         </div>
         <div class="stepDiv">
             <h3>Write a campaign quote:</h3>
-            <p>The average voter should be able to understand it, so avoid using words with more than two syllables.</p>
-            <input type="text" id="textArea" name="quote" required placeholder="Quote" />
+            <input type="text" id="quoteTxt" name="quote" required placeholder="Quote" />
         </div>
         <div class="stepDiv">
             <h3>Add your signature:</h3>
-            <p>Extra points if it's totally illegible.</p>
             <input type="hidden" name="signature" value="data:image/png;base64,hello" />
         </div>
 

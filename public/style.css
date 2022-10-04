@@ -1,3 +1,5 @@
+/* GLOBAL */
+
 * {
     box-sizing: border-box;
     padding: 0;
@@ -11,26 +13,6 @@ h3,
 h4,
 p {
     cursor: default;
-}
-
-body {
-    background-color: rgb(243, 243, 243);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-main {
-    width: 1000px;
-    background-color: white;
-    margin: 0 auto;
-}
-
-footer {
-    background-color: blanchedalmond;
-    width: 1000px;
-    height: 30px;
-    margin: 0 auto;
 }
 
 /* COMMON */
@@ -118,12 +100,40 @@ footer {
     text-align: center;
 }
 
+/* MAIN */
+
+main p,
+main h2,
+main h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+body {
+    background-color: rgb(243, 243, 243);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+main {
+    width: 1000px;
+    background-color: white;
+    margin: 0 auto;
+}
+
+footer {
+    background-color: blanchedalmond;
+    width: 1000px;
+    margin: 0 auto;
+}
+
 /* PETITION PAGE */
 
 .petitionDiv {
     background-color: white;
     border: 1px solid black;
-    padding: 10px;
+    padding: 0px 10px;
 }
 
 #petitionImg {
@@ -132,6 +142,11 @@ footer {
     object-fit: cover;
 }
 
-#textArea {
+#quoteTxt {
     width: 80%;
+}
+
+#petitionTxt {
+    width: 80%;
+    height: 100px;
 }
