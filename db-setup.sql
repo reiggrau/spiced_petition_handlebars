@@ -15,7 +15,8 @@ CREATE TABLE petitions (
     id SERIAL primary key NOT NULL,
     first_name VARCHAR(255) NOT NULL CHECK (first_name != ''),
     last_name VARCHAR(255) NOT NULL CHECK (last_name != ''),
-    petition VARCHAR(255) NOT NULL CHECK (petition != '')
+    petition VARCHAR(255) NOT NULL CHECK (petition != ''),
+    signature_url VARCHAR NOT NULL CHECK (signature_url != '')
 );
 
 

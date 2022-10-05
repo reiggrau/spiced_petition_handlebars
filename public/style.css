@@ -130,7 +130,7 @@ footer {
 
 /* PETITION PAGE */
 
-.petitionDiv {
+.newPetitionDiv {
     background-color: white;
     border: 1px solid black;
     padding: 0px 10px;
@@ -149,4 +149,48 @@ footer {
 #petitionTxt {
     width: 80%;
     height: 100px;
+}
+
+#canvas {
+    border: 1px solid black;
+    cursor: url(assets/quill.png) 3 42, crosshair;
+}
+
+#signatureImg {
+    width: 500px;
+    height: 200px;
+}
+
+/* THANK YOU */
+
+#thankyouDiv {
+    text-align: center;
+}
+
+#thankyouDiv h1 {
+    margin-top: 30px;
+}
+
+.petitionDiv {
+    background: linear-gradient(#eee, #fff 50%);
+    border-radius: 5px;
+    width: 95%;
+    max-height: 200px;
+    margin: 10px auto;
+    border: 1px solid #c5c5c5;
+    box-shadow: 0 3px 10px #ddd;
+    display: flex;
+    text-align: left;
+}
+
+.petitionDiv img {
+    max-width: 180px;
+    max-height: 180px;
+    border: 1px solid #c5c5c5;
+    margin: 10px;
+    object-fit: contain;
+}
+
+.petitionDiv div {
+    margin: 0 30px 0 10px;
 }
