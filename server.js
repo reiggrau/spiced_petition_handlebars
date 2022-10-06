@@ -26,9 +26,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // db.getAllPetitions().then((rows) => {
 //     console.log("Petitions:", rows);
 // });
-// db.getAllRepresentatives().then((rows) => {
-//     console.log("Representatives:", rows);
-// });
+db.getAllRepresentatives().then((rows) => {
+    console.log("Representatives:", rows);
+});
 
 // MIDDLEWARES
 
@@ -58,19 +58,20 @@ app.post("/login", (req, res) => {
     console.log("LOG IN. req.body:", req.body);
     db.getRepresentative(req.body.email)
         .then((data) => {
-            console.log("data :", data);
-            console.log("data.length :", data.length);
             if (data.length) {
-                if (data[0].password === req.body.password) {
-                    req.session = { login: true, ...data[0] };
-                    req.session.password = null;
-                    res.redirect("/");
-                } else {
-                    let renderObj = { title: "Welcome", error_password: true };
-                    res.render("welcome", renderObj);
-                }
+                bcrypt.compare(req.body.password, data[0].password).then((compare) => {
+                    console.log("compare :", compare);
+                    if (compare) {
+                        req.session = { login: true, ...data[0] };
+                        req.session.password = null;
+                        res.redirect("/");
+                    } else {
+                        let renderObj = { title: "Welcome", error_password_login: true };
+                        res.render("welcome", renderObj);
+                    }
+                });
             } else {
-                let renderObj = { title: "Welcome", error_email: true };
+                let renderObj = { title: "Welcome", error_email_login: true };
                 res.render("welcome", renderObj);
             }
         })
@@ -84,17 +85,75 @@ app.post("/login", (req, res) => {
 app.post("/", (req, res) => {
     console.log("REGISTRATION. req.body:", req.body);
 
-    db.createRepresentative(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.image_url, req.body.quote)
-        .then((data) => {
-            console.log("Checkpoint 3. data:", data);
-            req.session = { login: true, ...data[0] };
-            req.session.password = null;
-            res.redirect("/");
-        })
-        .catch((error) => {
-            console.log("error: ", error);
-            res.redirect("/");
-        });
+    // Check if email already exists
+
+    if (!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password) {
+        let renderObj = { title: "Profile", error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, error_password: !req.body.password };
+        res.render("welcome", renderObj);
+    } else {
+        bcrypt
+            .genSalt()
+            .then((salt) => {
+                console.log("bcrypt 1. salt:", salt);
+                return bcrypt.hash(req.body.password, salt); // It's a promise so it must be returned
+            })
+            .then((hash) => {
+                console.log("bcrypt 2. hash:", hash);
+                db.createRepresentative(req.body.first_name, req.body.last_name, req.body.email, hash)
+                    .then((data) => {
+                        console.log("Checkpoint 3. data:", data);
+                        req.session = { login: true, ...data[0] };
+                        req.session.password = null;
+                        res.redirect("/profile");
+                    })
+                    .catch((error) => {
+                        console.log("error: ", error);
+                        res.redirect("/profile");
+                    });
+            });
+    }
+});
+
+// Profile
+
+app.get("/profile", (req, res) => {
+    if (req.session.login) {
+        res.render("profile", req.session);
+    } else {
+        res.redirect("/");
+    }
+});
+
+app.post("/profile", (req, res) => {
+    console.log("EDIT PROFILE. req.body:", req.body);
+
+    // Check if email already exists
+
+    if (!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password) {
+        let renderObj = { title: "Profile", error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, error_password: !req.body.password, ...req.session };
+        res.render("profile", renderObj);
+    } else {
+        bcrypt
+            .genSalt()
+            .then((salt) => {
+                console.log("bcrypt 1. salt:", salt);
+                return bcrypt.hash(req.body.password, salt); // It's a promise so it must be returned
+            })
+            .then((hash) => {
+                console.log("bcrypt 2. hash:", hash);
+                db.editRepresentative(req.body.first_name, req.body.last_name, req.body.email, hash, req.body.image_url, req.body.quote, req.body.party, req.session.id)
+                    .then((data) => {
+                        console.log("Checkpoint 3. data:", data);
+                        req.session = { login: true, ...data[0] };
+                        req.session.password = null;
+                        res.redirect("/");
+                    })
+                    .catch((error) => {
+                        console.log("error: ", error);
+                        res.redirect("/");
+                    });
+            });
+    }
 });
 
 // Petitions
@@ -125,7 +184,11 @@ app.post("/petitions", (req, res) => {
 app.get("/thankyou", (req, res) => {
     Promise.all([db.getPetition(req.session.id) /*, db.countSigners()*/]).then((results) => {
         console.log("results[0][0] :", results[0][0]);
-        res.render("thankyou", { title: "Thank you!", petition: results[0][0].petition, signature_url: results[0][0].signature_url, ...req.session });
+        if (!results[0][0]) {
+            res.redirect("/");
+        } else {
+            res.render("thankyou", { title: "Thank you!", petition: results[0][0].petition, signature_url: results[0][0].signature_url, ...req.session });
+        }
     });
 });
 
@@ -160,13 +223,6 @@ app.get("/votenow", (req, res) => {
     res.render("votenow", req.session);
 });
 
-// app.get("/", (req, res) => {
-//     // if user has not signed:
-//     //      render the petition page with the form
-//     // else
-//     //      redirect to thank-you page
-// });
-
 // Submit
 app.post("/", (req, res) => {
     // Check if the input is correct: first_name, last_name, signature
@@ -192,6 +248,20 @@ app.get("/signatures", (req, res) => {
     //      Get data from db
     //
 });
+
+// GET /profile
+// renders form to input profile info
+
+// POST /profile
+// Validate: age must be a number
+// validate: city must be text
+// validate: homepage is valid URL
+//      must start with http
+// save form data to database
+
+// GET /petitions/party
+// grab the party from the url
+// getAllPetitionsByParty
 
 // EXAMPLE
 

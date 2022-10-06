@@ -2,11 +2,11 @@
     <h1>THANK YOU FOR YOUR PETITION</h1>
     <h3>Your petition has been successfully submitted and will be reviewed soon.</h3>
     <div class="petitionDiv">
-        <img id="petitionDivImg" src={{image_url}} alt="signature" />
+        <img id="petitionDivImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
         <div>
-            <h3 id="name">{{first_name}} {{last_name}}</h3>
-            <p id="date">{{created_at}}</p>
+            <h3>{{first_name}} {{last_name}}</h3>
             <p>{{petition}}</p>
+            <p>{{created_at}}</p>
             <img id="signatureImg" src={{signature_url}} alt="signature" />
         </div>
     </div>

@@ -8,6 +8,7 @@ CREATE TABLE representatives (
     password VARCHAR(255) NOT NULL,
     image_url VARCHAR(255),
     quote VARCHAR(255),
+    party VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -1,0 +1,13 @@
+<h2>Here are all petitions</h2>
+<ul>
+    {{#petitions}}
+        <li>
+            <div>
+                {{first_name}}
+                {{last_name}}
+                <img src="{{signature_url}}" alt="" />
+            </div>
+        </li>
+
+    {{/petitions}}
+</ul>
