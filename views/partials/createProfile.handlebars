@@ -1,25 +1,19 @@
-<div class="newPetitionDiv" id="stepsDiv">
+<div class="sectionDiv" id="stepsDiv">
     <h2>Create an account</h2>
     <p>Fill in the form below to create your profile as a new house representative.</p>
-    <form action="/petitions" method="POST">
-        <div class="stepDiv">
-            <h3>Write your name:</h3>
-            <input name="first_name" required placeholder="First Name" />
-            <input name="last_name" required placeholder="Last Name" />
+    <form action="/" method="POST">
+        <h4>Write your name:</h4>
+        <input name="first_name" placeholder=" First Name" />
+        <input name="last_name" placeholder=" Last Name" />
+        <h4>Write your email and password:</h4>
+        <input name="email" placeholder=" example@email.com" />
+        <input type="password" name="password" placeholder=" password" />
+        <h4>Add a profile picture (optional):</h4>
+        <input type="url" class="longTxt" name="image_url" placeholder=" Image URL" />
+        <h4>Write a campaign quote (optional):</h4>
+        <input type="text" class="longTxt" name="quote" placeholder=" Quote" />
+        <div>
+            <p><input type="submit" value=" Create profile " /></p>
         </div>
-        <div class="stepDiv">
-            <h3>Add a profile picture:</h3>
-            <input type="url" name="image_url" required placeholder="Image URL" />
-        </div>
-        <div class="stepDiv">
-            <h3>Write a campaign quote:</h3>
-            <input type="text" id="quoteTxt" name="quote" required placeholder="Quote" />
-        </div>
-        <div class="stepDiv">
-            <h3>Add your signature:</h3>
-            <input type="hidden" name="signature" value="data:image/png;base64,hello" />
-        </div>
-
-        <input type="submit" value="Create profile" />
     </form>
 </div>

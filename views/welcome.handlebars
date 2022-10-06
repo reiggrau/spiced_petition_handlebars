@@ -1,6 +1,6 @@
-<div class="titleDiv">
+<div class="sectionDiv">
+    <div id="capitolImg"></div>
     <h1>Welcome to No One At The Wheel</h1>
-    <h3>Here an explanation of the site and a quick petition template</h3>
+    <h3>Here an explanation of the site and the registration template</h3>
 </div>
-
-{{> writePetition}}
+{{#if login}}{{else}}{{> createProfile}}{{/if}}

@@ -1,11 +1,13 @@
-<div id="thankyouDiv" class="titleDiv">
+<div id="thankyouDiv" class="sectionDiv">
     <h1>THANK YOU FOR YOUR PETITION</h1>
     <h3>Your petition has been successfully submitted and will be reviewed soon.</h3>
     <div class="petitionDiv">
-        <img id="signatureImg" src={{imgUrl}} alt="signature" />
+        <img id="petitionDivImg" src={{image_url}} alt="signature" />
         <div>
-            <h2>{{first_name}} {{last_name}}</h1>
+            <h3 id="name">{{first_name}} {{last_name}}</h3>
+            <p id="date">{{created_at}}</p>
             <p>{{petition}}</p>
+            <img id="signatureImg" src={{signature_url}} alt="signature" />
         </div>
     </div>
 </div>

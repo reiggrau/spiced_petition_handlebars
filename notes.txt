@@ -29,3 +29,10 @@ Functions:
 1. Create main page handelbars
 2. Create thank you handelbars
 3. Make css
+
+-----
+- Register page
+- Hash the password (hashPassword)
+- Once the user has registered (insertUser) > redirect to petition (remember to hash password)
+- (login) before checking password, check if email exists (findUserByEmail) - return user_id, email, password "SELECT user_id, email, password FROM users WHERE email = $1"
+- Authenticate (email, password) - findUserByEmail > compare passwords

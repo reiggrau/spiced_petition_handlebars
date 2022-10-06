@@ -1,11 +1,10 @@
-<div class="newPetitionDiv" id="writeDiv">
+<div class="sectionDiv" id="writeDiv">
     <h2>Make a new petition</h2>
-    <p>Fill the fields below to make a new petition:</p>
-    <form action="/" method="POST">
+    <p>As a registered representative you are allowed to submit petitions to the house of representatives.</p>
+    <p>The petition cannot be modified once submitted. Remember to check the text and signature before pressing the 'submit' button.</p>
+    <p>Once sent, the petition will be reviewed by the moderation team before being published on the voting page.</p>
+    <form action="/petitions" method="POST">
         <div>
-            <h3>Write your name:</h3>
-            <p><input name="first_name" placeholder="First Name" />{{#if error_firstname}}<font color="red"> First name field cannot be empty!</font>{{/if}}</p>
-            <p><input name="last_name" placeholder="Last Name" />{{#if error_lastname}}<font color="red"> Last name field cannot be empty!</font>{{/if}}</p>
             <h3>Write your petition:</h3>
             <input type="text" id="petitionTxt" name="petition" placeholder="Write your petition here." />
             <p>{{#if error_petition}}<font color="red"> You must write a petition!</font>{{/if}}</p>

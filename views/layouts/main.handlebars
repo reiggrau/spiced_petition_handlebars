@@ -7,14 +7,15 @@
         <title>{{title}}</title>
     </head>
     <body>
-        <header id="headerMain">
+        <header>
             <nav id="navMain">
-                <a href="/"><h3 class="navBtn">HOME</h3></a>
-                <a href="/petitions"><h3 class="navBtn">PETITIONS</h3></a>
-                <a href="/representatives"><h3 class="navBtn">REPRESENTATIVES</h3></a>
-                <a href="/votenow"><h3 class="navBtn">VOTE NOW!</h3></a>
+                <a href="/"><h3>HOME</h3></a>
+                <a href="/petitions"><h3>PETITIONS</h3></a>
+                <a href="/representatives"><h3>REPRESENTATIVES</h3></a>
+                <a href="/votenow"><h3>VOTE NOW!</h3></a>
             </nav>
             <div id="logoDiv">
+                <div id="logoImg"></div>
                 <div id="logoTxt">
                     <h2>* * * NO ONE * * *</h2>
                     <h4>at the</h4>
@@ -29,7 +30,12 @@
             </div>
         </header>
         <main>
-            {{{body}}}
+            <div id="sidebar">
+                {{> userCard}}
+            </div>
+            <div>
+                {{{body}}}
+            </div>
         </main>
         <footer id="footerMain">
             <p>SPICED House of Representatives</p>

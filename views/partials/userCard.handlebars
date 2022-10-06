@@ -1,0 +1,24 @@
+<div id="userCard">
+    {{#if login}}
+        <div>
+            <img src={{image_url}} alt="" />
+            <h3>{{first_name}} {{last_name}}</h3>
+            <p>{{quote}}</p>
+            <form action="/logout" method="GET"><input class="log" type="submit" value=" Log out " /></form>
+        </div>
+    {{else}}
+        <div>
+            <img src="./assets/user_white.png" alt="" />
+            <h3>Guest user</h3>
+            <form action="/login" method="POST">
+                <div>
+                    <p>{{#if error_email}}<font color="red">Wrong email!</font>{{/if}}</p>
+                    <p>email: <input name="email" placeholder=" example@email.com" /></p>
+                    <p>{{#if error_password}}<font color="red">Wrong password!</font>{{/if}}</p>
+                    <p>password: <input id="password" type="password" name="password" placeholder=" password" /></p>
+                </div>
+                <input class="log" type="submit" value=" Log in " />
+            </form>
+        </div>
+    {{/if}}
+</div>
