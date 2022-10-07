@@ -214,8 +214,51 @@ footer {
     margin-top: 30px;
 }
 
-/* petition div */
+/* PETITION TEMPLATE */
+
 .petitionDiv {
+    background: linear-gradient(#eee, #fff 50%);
+    border-radius: 5px;
+    width: 95%;
+    height: 200px;
+    margin: 10px auto;
+    border: 1px solid #c5c5c5;
+    box-shadow: 0 3px 10px #ddd;
+    display: flex;
+    text-align: left;
+}
+
+.petitionUserDiv {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#userImg {
+    width: 140px;
+    height: 140px;
+    margin: 10px 10px 0 10px;
+    object-fit: cover;
+    border: 1px solid grey;
+    background-color: grey;
+}
+
+#userTxt {
+    margin: 5px;
+}
+
+.petitionInfo {
+    display: flex;
+    bottom: 0px;
+}
+
+#signatureImg {
+    width: 100px;
+    height: 50px;
+}
+
+/* REPRESENTATIVE TEMPLATE */
+.representativeDiv {
     background: linear-gradient(#eee, #fff 50%);
     border-radius: 5px;
     width: 95%;
@@ -227,21 +270,17 @@ footer {
     text-align: left;
 }
 
-#petitionDivImg {
-    width: 180px;
-    height: 180px;
+#representativeImg {
+    min-width: 180px;
+    min-height: 180px;
+    max-width: 180px;
+    max-height: 180px;
     margin: 10px;
-    object-fit: contain;
+    object-fit: cover;
     border: 1px solid grey;
     background-color: grey;
 }
 
-.petitionDiv div {
+.representativeDiv div {
     margin: 0 30px 0 10px;
-}
-
-#signatureImg {
-    width: 100px;
-    height: 50px;
-    float: right;
 }

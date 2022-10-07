@@ -2,3 +2,30 @@
     <h1>VOTE NOW!</h1>
     <p>Explanation of the page.</p>
 </div>
+
+<div class="petitionDiv">
+    <div class="petitionUserDiv">
+        <img id="userImg" src="./assets/default_user.jpeg" alt="signature" />
+        <h4 id="userTxt">Firstname Lastname</h4>
+    </div>
+    <div>
+        <h3>Petition title</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis suscipit ratione cupiditate porro? Accusamus libero eligendi veritatis harum facilis ullam. Quas, hic quo eaque at nostrum ipsa facere sequi saepe.</p>
+        <div class="petitionInfo">
+            <h4>date</h4>
+            <img id="signatureImg" src="" alt="signature" />
+        </div>
+    </div>
+
+</div>
+
+{{!-- {{#representatives}}
+    <div class="petitionDiv">
+        <img id="petitionDivImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
+        <div>
+            <h3>{{first_name}} {{last_name}}</h3>
+            <p>{{quote}}</p>
+            <p>{{party}}</p>
+        </div>
+    </div>
+{{/representatives}} --}}

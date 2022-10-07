@@ -43,7 +43,10 @@ function getRepresentative(email) {
 }
 
 function getAllRepresentatives() {
-    const sql = "SELECT * FROM representatives;";
+    const sql = `
+    SELECT * FROM representatives
+    ORDER BY id ASC
+    ;`;
     return db
         .query(sql)
         .then((results) => {
@@ -123,6 +126,11 @@ function getAllPetitionsByGroup(group) {
 
     `;
 }
+
+// getAllUserInfo
+// SELECT join users + profiles
+// firstname, lastname, email
+// age, city, url
 
 // EXPORTS
 module.exports = {

@@ -43,45 +43,12 @@ app.use(
 );
 
 // BODY
-// Main page (petition)
+// HOME PAGE
 app.get("/", (req, res) => {
     console.log("req.session :", req.session);
     res.render("welcome", { title: "Petition", ...req.session });
 });
 
-app.get("/logout", (req, res) => {
-    req.session = null;
-    res.redirect("/");
-});
-
-app.post("/login", (req, res) => {
-    console.log("LOG IN. req.body:", req.body);
-    db.getRepresentative(req.body.email)
-        .then((data) => {
-            if (data.length) {
-                bcrypt.compare(req.body.password, data[0].password).then((compare) => {
-                    console.log("compare :", compare);
-                    if (compare) {
-                        req.session = { login: true, ...data[0] };
-                        req.session.password = null;
-                        res.redirect("/");
-                    } else {
-                        let renderObj = { title: "Welcome", error_password_login: true };
-                        res.render("welcome", renderObj);
-                    }
-                });
-            } else {
-                let renderObj = { title: "Welcome", error_email_login: true };
-                res.render("welcome", renderObj);
-            }
-        })
-        .catch((error) => {
-            console.log("error: ", error);
-            res.redirect("/");
-        });
-});
-
-// registration
 app.post("/", (req, res) => {
     console.log("REGISTRATION. req.body:", req.body);
 
@@ -114,8 +81,39 @@ app.post("/", (req, res) => {
     }
 });
 
-// Profile
+app.post("/login", (req, res) => {
+    console.log("LOG IN. req.body:", req.body);
+    db.getRepresentative(req.body.email)
+        .then((data) => {
+            if (data.length) {
+                bcrypt.compare(req.body.password, data[0].password).then((compare) => {
+                    console.log("compare :", compare);
+                    if (compare) {
+                        req.session = { login: true, ...data[0] };
+                        req.session.password = null;
+                        res.redirect("/");
+                    } else {
+                        let renderObj = { title: "Welcome", error_password_login: true };
+                        res.render("welcome", renderObj);
+                    }
+                });
+            } else {
+                let renderObj = { title: "Welcome", error_email_login: true };
+                res.render("welcome", renderObj);
+            }
+        })
+        .catch((error) => {
+            console.log("error: ", error);
+            res.redirect("/");
+        });
+});
 
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
+});
+
+// PROFILE PAGE
 app.get("/profile", (req, res) => {
     if (req.session.login) {
         res.render("profile", req.session);
@@ -127,7 +125,13 @@ app.get("/profile", (req, res) => {
 app.post("/profile", (req, res) => {
     console.log("EDIT PROFILE. req.body:", req.body);
 
+    // VALIDATION:
+    // Mandatory fields should be filled > else render with error
+    // Validate values are correct format and safe > else render with error
     // Check if email already exists
+    // UPDATE TABLES:
+    // If password is given, update firstname, lastname, email and password
+    // Else update firstname, lastname, email and password
 
     if (!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password) {
         let renderObj = { title: "Profile", error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, error_password: !req.body.password, ...req.session };
@@ -156,7 +160,7 @@ app.post("/profile", (req, res) => {
     }
 });
 
-// Petitions
+// PETITIONS PAGE
 app.get("/petitions", (req, res) => {
     res.render("petitions", req.session);
 });
@@ -180,7 +184,7 @@ app.post("/petitions", (req, res) => {
     }
 });
 
-// Thank you page
+// THANK YOU PAGE
 app.get("/thankyou", (req, res) => {
     Promise.all([db.getPetition(req.session.id) /*, db.countSigners()*/]).then((results) => {
         console.log("results[0][0] :", results[0][0]);
@@ -192,61 +196,33 @@ app.get("/thankyou", (req, res) => {
     });
 });
 
-app.post("/petitions", (req, res) => {
-    // Check if the input is correct: first_name, last_name, signature
-    //      STORE in database
-    //      SET a cookie
-    //      redirect to thank-you page
-    // Else display error message
-    //      where is the error?
-    //      show the form again with error message
-    console.log("Checkpoint 2. req.body:", req.body);
-
-    db.createRepresentative(req.body.first_name, req.body.last_name, req.body.image_url, req.body.quote)
-        .then((result) => {
-            console.log("Checkpoint 3.");
-            db.getAllRepresentatives().then((rows) => {
-                console.log("Representatives:", rows);
-            });
-            res.redirect("/");
+// REPRESENTATIVES PAGE
+app.get("/representatives", (req, res) => {
+    db.getAllRepresentatives()
+        .then((data) => {
+            console.log("data :", data);
+            res.render("representatives", { representatives: data, ...req.session });
         })
-        .catch((err) => {
-            console.log("err: ", err);
+        .catch((error) => {
+            console.log("error: ", error);
+            res.redirect("/");
         });
 });
 
-app.get("/representatives", (req, res) => {
-    res.render("representatives", req.session);
-});
-
+// VOTE NOW PAGE
 app.get("/votenow", (req, res) => {
+    // db.getAllPetitions()
+    //     .then((data) => {
+    //         logData = { signature_url: null, ...data };
+    //         console.log("data :", logData);
+    //         res.render("votenow", { petitions: data, ...req.session });
+    //     })
+    //     .catch((error) => {
+    //         console.log("error: ", error);
+    //         res.redirect("/");
+    //     });
+
     res.render("votenow", req.session);
-});
-
-// Submit
-app.post("/", (req, res) => {
-    // Check if the input is correct: first_name, last_name, signature
-    //      STORE in database
-    //      SET a cookie
-    //      redirect to thank-you page
-    // Else display error message
-    //      where is the error?
-    //      show the form again with error message
-});
-
-// Thank you page
-app.get("/thank-you", (req, res) => {
-    // If user has signed
-    //      Get data from db
-    //      show info: thank you for signing + how many people has signed
-    // else
-    //      redirect to petition page
-});
-
-app.get("/signatures", (req, res) => {
-    // if user has signed
-    //      Get data from db
-    //
 });
 
 // GET /profile

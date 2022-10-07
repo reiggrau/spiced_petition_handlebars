@@ -36,3 +36,7 @@ Functions:
 - Once the user has registered (insertUser) > redirect to petition (remember to hash password)
 - (login) before checking password, check if email exists (findUserByEmail) - return user_id, email, password "SELECT user_id, email, password FROM users WHERE email = $1"
 - Authenticate (email, password) - findUserByEmail > compare passwords
+
+
+/// IMPORTANT ///
+- data validation (age should be a number, link starts with http, not allowed to insert code, etc.)
