@@ -29,11 +29,14 @@
             <option value="Socialist">
             <option value="Environmentalist">
         </datalist>
+        <h4>User page (optional):</h4>
+        <input type="url" class="longTxt" name="user_page" placeholder=" User page" value="{{user_page}}" />
         <div>
             <p><input type="submit" value=" Save changes " /></p>
         </div>
     </form>
-    <form action="">
-        <input type="submit" value="❌">
+    <form action="/deleteuser" method="POST">
+        <input id="deleteButton" class="log" type="submit" value=" delete user ❌ {{id}}" />
+        <input type="hidden" name="id" value="{{id}}" />
     </form>
 </div>

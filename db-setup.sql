@@ -22,10 +22,10 @@ CREATE TABLE profiles (
 
 
 CREATE TABLE petitions (
-    id SERIAL primary key NOT NULL,
-    user_id INT NOT NULL UNIQUE REFERENCES representatives (id),
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES representatives (id),
     title VARCHAR(255) NOT NULL,
-    petition VARCHAR(255) NOT NULL,
+    petition VARCHAR(510) NOT NULL,
     signature_url VARCHAR NOT NULL,
     topic VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

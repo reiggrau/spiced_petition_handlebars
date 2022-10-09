@@ -62,7 +62,6 @@ app.post("/", (req, res) => {
         // Check if email already exists
         db.checkEmail(req.body.email)
             .then((data) => {
-                console.log("Checkpoint 1. checkEmail:", data);
                 if (data.length && data[0].id != req.session.id) {
                     renderObj = { error_email_used: true };
                     throw new Error("Email already in use!");
@@ -71,15 +70,12 @@ app.post("/", (req, res) => {
                 }
             })
             .then((salt) => {
-                console.log("Checkpoint 2. bcrypt.salt:", salt);
                 return bcrypt.hash(req.body.password, salt); // It's a promise so it must be returned
             })
             .then((hash) => {
-                console.log("Checkpoint 3. hash:", hash);
                 return db.createRepresentative(req.body.first_name, req.body.last_name, req.body.email, hash);
             })
             .then((data) => {
-                console.log("Checkpoint 4. data:", data);
                 req.session = Object.assign(req.session, data[0]);
                 res.redirect("/profile");
             })
@@ -97,7 +93,6 @@ app.post("/login", (req, res) => {
         .then((data) => {
             if (data.length) {
                 bcrypt.compare(req.body.password, data[0].password).then((compare) => {
-                    console.log("compare :", compare);
                     if (compare) {
                         delete data[0].password; // caution!
                         req.session = Object.assign(req.session, data[0]);
@@ -175,12 +170,10 @@ app.post("/profile", (req, res) => {
                 }
             })
             .then((data1) => {
-                console.log("representatives data1:", data1);
                 dataObj = { ...data1[0] };
-                return db.editProfile(req.session.id, req.body.image_url, req.body.quote, req.body.party);
+                return db.editProfile(req.session.id, req.body.image_url, req.body.quote, req.body.party, req.body.user_page);
             })
             .then((data2) => {
-                console.log("profiles data2:", data2);
                 dataObj = Object.assign(dataObj, data2[0]);
                 req.session = Object.assign(req.session, dataObj);
                 res.redirect("/petitions");
@@ -206,7 +199,6 @@ app.post("/petitions", (req, res) => {
     } else {
         db.createPetition(req.session.id, req.body.title, req.body.petition, req.body.signature_url, req.body.topic)
             .then((data) => {
-                console.log("Checkpoint 3. data:", data);
                 res.redirect("/thankyou");
             })
             .catch((error) => {
@@ -216,33 +208,23 @@ app.post("/petitions", (req, res) => {
     }
 });
 
-// delete petition
-app.post("/petitions/delete", (req, res) => {
-    // VALIDATIOIN
-    // user signed in
-    // db.deletePetition
-    // remove 'signed' from session
-    // redirect to petition page
-});
-
 // THANK YOU PAGE
 app.get("/thankyou", (req, res) => {
     let renderObj;
     Promise.all([db.getLastPetition(req.session.id), db.countPetitions(), db.countRepresentatives(), db.getAllPetitions()]).then((data) => {
-        console.log("data :", data);
         if (!data[0][0]) {
             res.redirect("/");
         } else {
-            petitionData = data[0];
+            petitionData = [data[0][0]];
             petitionData[0].petition_id = petitionData[0].id;
             delete petitionData[0].id;
             petitionData[0].canDelete = petitionData[0].user_id == req.session.id;
-            petitionData[0].created_at = new Intl.DateTimeFormat("en-GB", { dateStyle: "full", timeStyle: "long" }).format(petitionData.created_at);
-            console.log("petitionData :", petitionData);
+            petitionData[0].created_at = petitionData[0].created_at.toString().split(" GMT")[0];
 
             petition_count = data[1][0].count;
             representatives_count = data[2][0].count;
 
+            data[3].shift();
             miniPetitions = data[3];
 
             renderObj = { petitionData, petition_count, representatives_count, miniPetitions, ...req.session };
@@ -251,11 +233,22 @@ app.get("/thankyou", (req, res) => {
     });
 });
 
+// delete petition
+app.post("/deletepetition", (req, res) => {
+    console.log("DELETE PETITION:", req.body.petition_id);
+    if (req.session.id) {
+        db.deletePetition(req.body.petition_id).then(() => {
+            res.redirect("/petitions");
+        });
+    } else {
+        res.redirect("/");
+    }
+});
+
 // REPRESENTATIVES PAGE
 app.get("/representatives", (req, res) => {
     db.getAllRepresentatives()
         .then((data) => {
-            console.log("data :", data);
             res.render("representatives", { page: "Representatives", representatives: data, ...req.session });
         })
         .catch((error) => {
@@ -266,18 +259,21 @@ app.get("/representatives", (req, res) => {
 
 // VOTE NOW PAGE
 app.get("/votenow", (req, res) => {
-    // db.getAllPetitions()
-    //     .then((data) => {
-    //         logData = { signature_url: null, ...data };
-    //         console.log("data :", logData);
-    //         res.render("votenow", { petitions: data, ...req.session });
-    //     })
-    //     .catch((error) => {
-    //         console.log("error: ", error);
-    //         res.redirect("/");
-    //     });
-
-    res.render("votenow", { page: "Vote now!", ...req.session });
+    db.getAllPetitions()
+        .then((data) => {
+            console.log("data :", data);
+            for (let element of data) {
+                element.petition_id = element.id;
+                delete element.id;
+                element.canDelete = element.user_id == req.session.id;
+                element.created_at = element.created_at.toString().split(" GMT")[0];
+            }
+            res.render("votenow", { title: "Vote now!", petitions: data, ...req.session });
+        })
+        .catch((error) => {
+            console.log("error: ", error);
+            res.redirect("/");
+        });
 });
 
 // GET /profile

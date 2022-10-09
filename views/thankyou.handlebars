@@ -5,21 +5,23 @@
     {{#petitionData}}
     <div class="petitionDiv">
         <div class="petitionUserDiv">
-            <img id="userImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
+            <a href="{{user_page}}"><img id="userImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" /></a>
             <h4 id="userTxt">{{first_name}} {{last_name}}</h4>
         </div>
         <div class="petitionContent">
             {{#if canDelete}}
-                <form action="/delete_petition" method="GET">
-                    <input id="deleteButton" class="log" type="submit" value=" ❌ {{petition_id}} " />
-                    <input type="hidden" name="petition_id" value="{{id}}" />
+                <form action="/deletepetition" method="POST">
+                    <input id="deleteButton" class="log" type="submit" value=" delete ❌ " />
+                    <input type="hidden" name="petition_id" value="{{petition_id}}" />
                 </form>
             {{/if}}
             <h3>{{title}}</h3>
             <p>{{petition}}</p>
-            <img id="signatureImg" src={{signature_url}} alt="signature" />
         </div>
-        <p id="petitionDate">{{created_at}}</p>
+        <div id="petitionDate">
+        <p>{{created_at}}</p>
+        <img id="signatureImg" src="{{signature_url}}" alt="signature">
+        </div>
     </div>
     {{/petitionData}}
     <h4>So far, a total of <span style="font-size:25px"> {{petition_count}} </span> petitions have been submitted by <span style="font-size:25px"> {{representatives_count}} </span> House Representatives.</h4>
@@ -29,10 +31,10 @@
         <div class="miniDivContainer">
         {{#miniPetitions}}
             <div class="miniDiv">
-                <img id="miniImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="">
+                <a href="{{user_page}}"><img id="miniImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt=""></a>
                 <div class="miniContent">
                     <h3>{{title}}</h3>
-                    <p>{{petition}}</p>
+                    <p>{{topic}}</p>
                 </div>
             </div>
         {{/miniPetitions}}

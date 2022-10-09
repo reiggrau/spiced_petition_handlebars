@@ -229,7 +229,7 @@ footer {
 
 #deleteButton {
     float: right;
-    margin: 10px;
+    margin: 8px;
 }
 
 /* PETITION TEMPLATE */
@@ -238,10 +238,12 @@ footer {
     border-radius: 5px;
     width: 95%;
     height: 200px;
+    padding-right: 10px;
     margin: 10px auto;
     border: 1px solid #c5c5c5;
     box-shadow: 0 3px 10px #ddd;
     text-align: left;
+    text-align: justify;
     display: grid;
     grid-template: 160px 30px / 160px 1fr;
 }
@@ -271,22 +273,37 @@ footer {
     grid-row: 1;
 }
 
-#signatureImg {
-    width: 200px;
-    height: 100px;
-    float: right;
+.petitionTitle {
+    display: flex;
+    gap: 15px;
+}
+
+.topicLink {
+    color: rgb(89, 89, 89);
+    text-decoration: none;
     position: relative;
-    bottom: -30px;
+    bottom: -12px;
 }
 
 #petitionDate {
     grid-column: 2;
     grid-row: 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+#signatureImg {
+    width: 200px;
+    height: 100px;
+    position: relative;
+    bottom: 60px;
+    right: 0;
 }
 
 /* MINI TEMPLATE */
 .miniDivContainer {
     display: flex;
+    flex-direction: column;
 }
 
 .miniDiv {

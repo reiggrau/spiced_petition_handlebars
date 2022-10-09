@@ -34,7 +34,7 @@ function createRepresentative(first_name, last_name, email, password) {
 
 function getRepresentative(email) {
     const sql = `
-    SELECT representatives.id, first_name, last_name, email, password, created_at, image_url, quote, party
+    SELECT representatives.id, first_name, last_name, email, password, created_at, image_url, quote, party, user_page
     FROM representatives LEFT OUTER JOIN profiles
     ON representatives.id = user_id
     WHERE email = $1
@@ -70,16 +70,16 @@ function editRepresentativeNoPassword(id, first_name, last_name, email) {
         .catch((error) => console.log("Error in editRepresentativeNoPassword:", error));
 }
 
-function editProfile(user_id, image_url, quote, party) {
+function editProfile(user_id, image_url, quote, party, user_page) {
     const sql = `
-    INSERT INTO profiles (user_id, image_url, quote, party)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO profiles (user_id, image_url, quote, party, user_page)
+    VALUES ($1, $2, $3, $4, $5)
     ON CONFLICT (user_id) DO
-    UPDATE SET image_url = $2, quote = $3, party = $4
-    RETURNING image_url, quote, party
+    UPDATE SET image_url = $2, quote = $3, party = $4, user_page = $5
+    RETURNING image_url, quote, party, user_page
     ;`;
     return db
-        .query(sql, [user_id, image_url, quote, party]) // correct way to add data to sql
+        .query(sql, [user_id, image_url, quote, party, user_page]) // correct way to add data to sql
         .then((result) => result.rows)
         .catch((error) => console.log("Error in editProfile", error));
 }
@@ -99,7 +99,7 @@ function createPetition(user_id, title, petition, signature_url, topic) {
 
 function deletePetition(id) {
     const sql = `
-    DELETE * FROM petitions
+    DELETE FROM petitions
     WHERE id = $1
     ;`;
     return db
@@ -111,11 +111,12 @@ function deletePetition(id) {
 // THANK YOU
 function getLastPetition(userId) {
     const sql = `
-    SELECT * FROM petitions
+    SELECT petitions.id, petitions.user_id, title, petition, signature_url, topic, petitions.created_at, first_name, last_name, image_url, quote, party, user_page
+    FROM petitions
     LEFT OUTER JOIN representatives ON petitions.user_id = representatives.id
     LEFT OUTER JOIN profiles ON petitions.user_id = profiles.user_id
     WHERE petitions.user_id = $1
-    ORDER BY petitions.id ASC
+    ORDER BY petitions.id DESC
     ;`;
     return db
         .query(sql, [userId])
@@ -146,7 +147,7 @@ function countRepresentatives() {
 // REPRESENTATIVES PAGE
 function getAllRepresentatives() {
     const sql = `
-    SELECT representatives.id, first_name, last_name, email, password, created_at, image_url, quote, party
+    SELECT representatives.id, first_name, last_name, email, password, created_at, image_url, quote, party, user_page
     FROM representatives LEFT OUTER JOIN profiles
     ON representatives.id = user_id
     ORDER BY id ASC
@@ -165,7 +166,8 @@ function getAllRepresentatives() {
 // VOTE NOW PAGE
 function getAllPetitions() {
     const sql = `
-    SELECT * FROM petitions
+    SELECT petitions.id, petitions.user_id, title, petition, signature_url, topic, petitions.created_at, first_name, last_name, image_url, quote, party, user_page 
+    FROM petitions
     LEFT OUTER JOIN representatives ON petitions.user_id = representatives.id
     LEFT OUTER JOIN profiles ON petitions.user_id = profiles.user_id
     ORDER BY petitions.id DESC

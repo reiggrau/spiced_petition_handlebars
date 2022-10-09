@@ -3,29 +3,30 @@
     <p>Explanation of the page.</p>
 </div>
 
-<div class="petitionDiv">
-    <div class="petitionUserDiv">
-        <img id="userImg" src="./assets/default_user.jpeg" alt="signature" />
-        <h4 id="userTxt">Firstname Lastname</h4>
-    </div>
-    <div>
-        <h3>Petition title</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis suscipit ratione cupiditate porro? Accusamus libero eligendi veritatis harum facilis ullam. Quas, hic quo eaque at nostrum ipsa facere sequi saepe.</p>
-        <div class="petitionInfo">
-            <h4>date</h4>
-            <img id="signatureImg" src="" alt="signature" />
-        </div>
-    </div>
-
-</div>
-
-{{!-- {{#representatives}}
+{{#petitions}}
     <div class="petitionDiv">
-        <img id="petitionDivImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
-        <div>
-            <h3>{{first_name}} {{last_name}}</h3>
-            <p>{{quote}}</p>
-            <p>{{party}}</p>
+        <div class="petitionUserDiv">
+            <a href="{{user_page}}"><img id="userImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" /></a>
+            <h4 id="userTxt">{{first_name}} {{last_name}}</h4>
+        </div>
+        <div class="petitionContent">
+            {{#if canDelete}}
+                <form action="/deletepetition" method="POST">
+                    <input id="deleteButton" class="log" type="submit" value=" delete ❌ " />
+                    <input type="hidden" name="petition_id" value="{{petition_id}}" />
+                </form>
+            {{/if}}
+            <div class="petitionTitle">
+            <h3>{{title}}</h3>
+                <div>
+                    {{#if topic}}<a class="topicLink" href="/topic/{{topic}}">({{topic}})</a>{{/if}}
+                </div>
+            </div>
+            <p>{{petition}}</p>
+        </div>
+        <div id="petitionDate">
+        <p>{{created_at}}</p>
+        <img id="signatureImg" src="{{signature_url}}" alt="signature">
         </div>
     </div>
-{{/representatives}} --}}
+    {{/petitions}}
