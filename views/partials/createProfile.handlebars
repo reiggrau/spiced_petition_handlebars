@@ -8,7 +8,7 @@
         <p>{{#if error_last_name}}<font color="red"> You must write a last name!</font>{{/if}}</p>
         <input name="last_name" placeholder=" Last Name" />
         <h4>Write your email and password:</h4>
-        <p>{{#if error_email}}<font color="red"> You must write an email!</font>{{/if}}</p>
+        <p>{{#if error_email}}<font color="red"> You must write an email!</font>{{else if error_email_used}}<font color="red"> Email already in use!</font>{{/if}}</p>
         <input name="email" placeholder=" example@email.com" />
         <p>{{#if error_password}}<font color="red"> You must write a password!</font>{{/if}}</p>
         <input type="password" name="password" placeholder=" password" />

@@ -46,60 +46,70 @@ app.use(
 // HOME PAGE
 app.get("/", (req, res) => {
     console.log("req.session :", req.session);
-    res.render("welcome", { title: "Petition", ...req.session });
+    res.render("welcome", { page: "Home page", ...req.session });
 });
 
 app.post("/", (req, res) => {
     console.log("REGISTRATION. req.body:", req.body);
 
-    // Check if email already exists
+    let renderObj;
 
+    // Check if empty fields
     if (!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password) {
-        let renderObj = { title: "Profile", error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, error_password: !req.body.password };
-        res.render("welcome", renderObj);
+        renderObj = { error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, error_password: !req.body.password };
+        res.render("welcome", { page: "Welcome", ...renderObj });
     } else {
-        bcrypt
-            .genSalt()
+        // Check if email already exists
+        db.checkEmail(req.body.email)
+            .then((data) => {
+                console.log("Checkpoint 1. checkEmail:", data);
+                if (data.length && data[0].id != req.session.id) {
+                    renderObj = { error_email_used: true };
+                    throw new Error("Email already in use!");
+                } else {
+                    return bcrypt.genSalt();
+                }
+            })
             .then((salt) => {
-                console.log("bcrypt 1. salt:", salt);
+                console.log("Checkpoint 2. bcrypt.salt:", salt);
                 return bcrypt.hash(req.body.password, salt); // It's a promise so it must be returned
             })
             .then((hash) => {
-                console.log("bcrypt 2. hash:", hash);
-                db.createRepresentative(req.body.first_name, req.body.last_name, req.body.email, hash)
-                    .then((data) => {
-                        console.log("Checkpoint 3. data:", data);
-                        req.session = { login: true, ...data[0] };
-                        req.session.password = null;
-                        res.redirect("/profile");
-                    })
-                    .catch((error) => {
-                        console.log("error: ", error);
-                        res.redirect("/profile");
-                    });
+                console.log("Checkpoint 3. hash:", hash);
+                return db.createRepresentative(req.body.first_name, req.body.last_name, req.body.email, hash);
+            })
+            .then((data) => {
+                console.log("Checkpoint 4. data:", data);
+                req.session = Object.assign(req.session, data[0]);
+                res.redirect("/profile");
+            })
+            .catch((error) => {
+                console.log("error: ", error);
+                res.render("welcome", { page: "Profile", ...renderObj });
             });
     }
 });
 
 app.post("/login", (req, res) => {
     console.log("LOG IN. req.body:", req.body);
+    let renderObj;
     db.getRepresentative(req.body.email)
         .then((data) => {
             if (data.length) {
                 bcrypt.compare(req.body.password, data[0].password).then((compare) => {
                     console.log("compare :", compare);
                     if (compare) {
-                        req.session = { login: true, ...data[0] };
-                        req.session.password = null;
+                        delete data[0].password; // caution!
+                        req.session = Object.assign(req.session, data[0]);
                         res.redirect("/");
                     } else {
-                        let renderObj = { title: "Welcome", error_password_login: true };
-                        res.render("welcome", renderObj);
+                        renderObj = { error_password_login: true };
+                        res.render("welcome", { page: "Welcome", ...renderObj });
                     }
                 });
             } else {
-                let renderObj = { title: "Welcome", error_email_login: true };
-                res.render("welcome", renderObj);
+                renderObj = { error_email_login: true };
+                res.render("welcome", { page: "Welcome", ...renderObj });
             }
         })
         .catch((error) => {
@@ -115,8 +125,8 @@ app.get("/logout", (req, res) => {
 
 // PROFILE PAGE
 app.get("/profile", (req, res) => {
-    if (req.session.login) {
-        res.render("profile", req.session);
+    if (req.session.id) {
+        res.render("profile", { page: "profile", ...req.session });
     } else {
         res.redirect("/");
     }
@@ -124,55 +134,77 @@ app.get("/profile", (req, res) => {
 
 app.post("/profile", (req, res) => {
     console.log("EDIT PROFILE. req.body:", req.body);
-
     // VALIDATION:
-    // Mandatory fields should be filled > else render with error
     // Validate values are correct format and safe > else render with error
-    // Check if email already exists
+    //
     // UPDATE TABLES:
-    // If password is given, update firstname, lastname, email and password
-    // Else update firstname, lastname, email and password
+    //
+    //
+    // redirect to petition page
 
-    if (!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password) {
-        let renderObj = { title: "Profile", error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, error_password: !req.body.password, ...req.session };
-        res.render("profile", renderObj);
+    let dataObj;
+    let renderObj;
+
+    if (!req.body.first_name || !req.body.last_name || !req.body.email) {
+        renderObj = { error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, ...req.session };
+        res.render("profile", { page: "Profile", ...renderObj });
     } else {
-        bcrypt
-            .genSalt()
+        db.checkEmail(req.body.email)
+            .then((data) => {
+                if (data.length && data[0].id != req.session.id) {
+                    renderObj = { error_email_used: true, ...req.session };
+                    throw new Error("Email already in use!");
+                } else if (req.body.password) {
+                    return bcrypt.genSalt();
+                } else {
+                    return false;
+                }
+            })
             .then((salt) => {
-                console.log("bcrypt 1. salt:", salt);
-                return bcrypt.hash(req.body.password, salt); // It's a promise so it must be returned
+                if (salt) {
+                    return bcrypt.hash(req.body.password, salt);
+                } else {
+                    return false;
+                }
             })
             .then((hash) => {
-                console.log("bcrypt 2. hash:", hash);
-                db.editRepresentative(req.body.first_name, req.body.last_name, req.body.email, hash, req.body.image_url, req.body.quote, req.body.party, req.session.id)
-                    .then((data) => {
-                        console.log("Checkpoint 3. data:", data);
-                        req.session = { login: true, ...data[0] };
-                        req.session.password = null;
-                        res.redirect("/");
-                    })
-                    .catch((error) => {
-                        console.log("error: ", error);
-                        res.redirect("/");
-                    });
+                if (hash) {
+                    return db.editRepresentative(req.session.id, req.body.first_name, req.body.last_name, req.body.email, hash);
+                } else {
+                    return db.editRepresentativeNoPassword(req.session.id, req.body.first_name, req.body.last_name, req.body.email);
+                }
+            })
+            .then((data1) => {
+                console.log("representatives data1:", data1);
+                dataObj = { ...data1[0] };
+                return db.editProfile(req.session.id, req.body.image_url, req.body.quote, req.body.party);
+            })
+            .then((data2) => {
+                console.log("profiles data2:", data2);
+                dataObj = Object.assign(dataObj, data2[0]);
+                req.session = Object.assign(req.session, dataObj);
+                res.redirect("/petitions");
+            })
+            .catch((error) => {
+                console.log("error: ", error);
+                res.render("profile", { page: "Profile", ...renderObj });
             });
     }
 });
 
 // PETITIONS PAGE
 app.get("/petitions", (req, res) => {
-    res.render("petitions", req.session);
+    res.render("petitions", { page: "Petitions", ...req.session });
 });
 
 app.post("/petitions", (req, res) => {
     console.log("NEW PETITION. req.body:", req.body);
 
-    if (!req.body.petition || !req.body.signature_url) {
-        let renderObj = { title: "Petition", error_petition: !req.body.petition, error_signature: !req.body.signature, ...req.session };
-        res.render("petitions", renderObj);
+    if (!req.body.title || !req.body.petition || !req.body.signature_url) {
+        let renderObj = { error_title: !req.body.title, error_petition: !req.body.petition, error_signature: !req.body.signature, ...req.session };
+        res.render("petitions", { page: "Petitions", ...renderObj });
     } else {
-        db.createPetition(req.session.id, req.body.petition, req.body.signature_url)
+        db.createPetition(req.session.id, req.body.title, req.body.petition, req.body.signature_url, req.body.topic)
             .then((data) => {
                 console.log("Checkpoint 3. data:", data);
                 res.redirect("/thankyou");
@@ -184,14 +216,37 @@ app.post("/petitions", (req, res) => {
     }
 });
 
+// delete petition
+app.post("/petitions/delete", (req, res) => {
+    // VALIDATIOIN
+    // user signed in
+    // db.deletePetition
+    // remove 'signed' from session
+    // redirect to petition page
+});
+
 // THANK YOU PAGE
 app.get("/thankyou", (req, res) => {
-    Promise.all([db.getPetition(req.session.id) /*, db.countSigners()*/]).then((results) => {
-        console.log("results[0][0] :", results[0][0]);
-        if (!results[0][0]) {
+    let renderObj;
+    Promise.all([db.getLastPetition(req.session.id), db.countPetitions(), db.countRepresentatives(), db.getAllPetitions()]).then((data) => {
+        console.log("data :", data);
+        if (!data[0][0]) {
             res.redirect("/");
         } else {
-            res.render("thankyou", { title: "Thank you!", petition: results[0][0].petition, signature_url: results[0][0].signature_url, ...req.session });
+            petitionData = data[0];
+            petitionData[0].petition_id = petitionData[0].id;
+            delete petitionData[0].id;
+            petitionData[0].canDelete = petitionData[0].user_id == req.session.id;
+            petitionData[0].created_at = new Intl.DateTimeFormat("en-GB", { dateStyle: "full", timeStyle: "long" }).format(petitionData.created_at);
+            console.log("petitionData :", petitionData);
+
+            petition_count = data[1][0].count;
+            representatives_count = data[2][0].count;
+
+            miniPetitions = data[3];
+
+            renderObj = { petitionData, petition_count, representatives_count, miniPetitions, ...req.session };
+            res.render("thankyou", { page: "Thank you!", ...renderObj });
         }
     });
 });
@@ -201,7 +256,7 @@ app.get("/representatives", (req, res) => {
     db.getAllRepresentatives()
         .then((data) => {
             console.log("data :", data);
-            res.render("representatives", { representatives: data, ...req.session });
+            res.render("representatives", { page: "Representatives", representatives: data, ...req.session });
         })
         .catch((error) => {
             console.log("error: ", error);
@@ -222,7 +277,7 @@ app.get("/votenow", (req, res) => {
     //         res.redirect("/");
     //     });
 
-    res.render("votenow", req.session);
+    res.render("votenow", { page: "Vote now!", ...req.session });
 });
 
 // GET /profile

@@ -1,13 +1,40 @@
 <div id="thankyouDiv" class="sectionDiv">
     <h1>THANK YOU FOR YOUR PETITION</h1>
     <h3>Your petition has been successfully submitted and will be reviewed soon.</h3>
+    {{!-- petition template --}}
+    {{#petitionData}}
     <div class="petitionDiv">
-        <img id="petitionDivImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
-        <div>
-            <h3>{{first_name}} {{last_name}}</h3>
+        <div class="petitionUserDiv">
+            <img id="userImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
+            <h4 id="userTxt">{{first_name}} {{last_name}}</h4>
+        </div>
+        <div class="petitionContent">
+            {{#if canDelete}}
+                <form action="/delete_petition" method="GET">
+                    <input id="deleteButton" class="log" type="submit" value=" ❌ {{petition_id}} " />
+                    <input type="hidden" name="petition_id" value="{{id}}" />
+                </form>
+            {{/if}}
+            <h3>{{title}}</h3>
             <p>{{petition}}</p>
-            <p>{{created_at}}</p>
             <img id="signatureImg" src={{signature_url}} alt="signature" />
         </div>
+        <p id="petitionDate">{{created_at}}</p>
     </div>
+    {{/petitionData}}
+    <h4>So far, a total of <span style="font-size:25px"> {{petition_count}} </span> petitions have been submitted by <span style="font-size:25px"> {{representatives_count}} </span> House Representatives.</h4>
+</div>
+<div class="sectionDiv">
+    <h3>Check other petitions:</h3>
+        <div class="miniDivContainer">
+        {{#miniPetitions}}
+            <div class="miniDiv">
+                <img id="miniImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="">
+                <div class="miniContent">
+                    <h3>{{title}}</h3>
+                    <p>{{petition}}</p>
+                </div>
+            </div>
+        {{/miniPetitions}}
+        </div>
 </div>

@@ -1,12 +1,11 @@
 <div id="userCard">
-    {{#if login}}
+    {{#if id}}
         <div>
             <img src={{#if image_url}}{{image_url}}{{else}}"./assets/user_white.png"{{/if}} alt="" />
             <h3>{{first_name}} {{last_name}}</h3>
-            <p>{{quote}}</p>
+            <p>{{#if quote }}"{{quote}}"{{/if}}</p>
             <div class="flexDiv">
                 <a href="/profile"><button class="log"> Edit profile </button> </a>
-                {{!-- <form action="/profile" method="GET"><input class="log" type="submit" value=" Edit profile " /></form> --}}
                 <form action="/logout" method="GET"><input class="log" type="submit" value=" Log out " /></form>
             </div>
         </div>
