@@ -8,12 +8,12 @@
     <form action="/profile" method="POST">
         <h4>Name:</h4>
         <p>{{#if error_first_name}}<font color="red"> You must write a first name!</font>{{/if}}</p>
-        <input name="first_name" placeholder=" First Name" value="{{first_name}}" />
+        <input type="text" name="first_name" placeholder=" First Name" value="{{first_name}}" />
         <p>{{#if error_last_name}}<font color="red"> You must write a last name!</font>{{/if}}</p>
-        <input name="last_name" placeholder=" Last Name" value="{{last_name}}" />
+        <input type="text" name="last_name" placeholder=" Last Name" value="{{last_name}}" />
         <h4>email and password:</h4>
         <p>{{#if error_email}}<font color="red"> You must write an email!</font>{{else if error_email_used}}<font color="red"> Email already in use!</font>{{/if}}</p>
-        <input name="email" placeholder=" example@email.com" value="{{email}}" />
+        <input type="email" name="email" placeholder=" example@email.com" value="{{email}}" />
         <p>{{#if error_password}}<font color="red"> You must write a password!</font>{{/if}}</p>
         <input type="password" name="password" placeholder=" password" />
         <h4>Profile picture (optional):</h4>
@@ -21,7 +21,7 @@
         <h4>Campaign quote (optional):</h4>
         <input type="text" class="longTxt" name="quote" placeholder=" Quote" value="{{quote}}" />
         <h4>Political party (optional):</h4>
-        <input list="party" name="party" placeholder=" Party" value="{{party}}">
+        <input type="text" list="party" name="party" placeholder=" Party" value="{{party}}">
         <datalist id="party">
             <option value="Conservative">
             <option value="Liberal">
@@ -30,13 +30,14 @@
             <option value="Environmentalist">
         </datalist>
         <h4>User page (optional):</h4>
+        <p>{{#if error_user_page}}<font color="red"> Invalid url!</font>{{/if}}</p>
         <input type="url" class="longTxt" name="user_page" placeholder=" User page" value="{{user_page}}" />
         <div>
             <p><input type="submit" value=" Save changes " /></p>
         </div>
     </form>
     <form action="/deleteuser" method="POST">
-        <input id="deleteButton" class="log" type="submit" value=" delete user ❌ {{id}}" />
-        <input type="hidden" name="id" value="{{id}}" />
+        <input id="deleteButton" class="log" type="submit" value=" delete user ❌ " />
+        <input type="hidden" name="user_id" value="{{id}}" />
     </form>
 </div>

@@ -48,7 +48,7 @@ function getRepresentative(email) {
 // PROFILE EDIT
 function editRepresentative(id, first_name, last_name, email, password) {
     const sql = `
-        UPDATE representatives SET first_name = $2, last_name = $3, email = $4, password = $5
+    UPDATE representatives SET first_name = $2, last_name = $3, email = $4, password = $5
     WHERE id = $1
     RETURNING id, first_name, last_name, email
     ;`;
@@ -82,6 +82,28 @@ function editProfile(user_id, image_url, quote, party, user_page) {
         .query(sql, [user_id, image_url, quote, party, user_page]) // correct way to add data to sql
         .then((result) => result.rows)
         .catch((error) => console.log("Error in editProfile", error));
+}
+
+function deleteRepresentative(user_id) {
+    const sql = `
+    DELETE FROM representatives
+    WHERE representatives.id = $1
+    ;`;
+    return db
+        .query(sql, [user_id])
+        .then((result) => result.rows)
+        .catch((error) => console.log("Error in createPetition:", error));
+}
+
+function deleteProfile(user_id) {
+    const sql = `
+    DELETE FROM profiles
+    WHERE user_id = $1
+    ;`;
+    return db
+        .query(sql, [user_id])
+        .then((result) => result.rows)
+        .catch((error) => console.log("Error in createPetition:", error));
 }
 
 // PETITIONS
@@ -184,9 +206,18 @@ function getAllPetitions() {
 }
 
 function getAllPetitionsByTopic(topic) {
-    sql = `
-
-    `;
+    const sql = `
+    SELECT petitions.id, petitions.user_id, title, petition, signature_url, topic, petitions.created_at, first_name, last_name, image_url, quote, party, user_page 
+    FROM petitions
+    LEFT OUTER JOIN representatives ON petitions.user_id = representatives.id
+    LEFT OUTER JOIN profiles ON petitions.user_id = profiles.user_id
+    WHERE topic = $1
+    ORDER BY petitions.id DESC
+    ;`;
+    return db
+        .query(sql, [topic])
+        .then((result) => result.rows)
+        .catch((error) => console.log("Error in getAllPetitionsByTopic:", error));
 }
 
 // deletePetition (userId)
@@ -199,6 +230,8 @@ module.exports = {
     editRepresentative,
     editRepresentativeNoPassword,
     editProfile,
+    deleteRepresentative,
+    deleteProfile,
     createPetition,
     deletePetition,
     getLastPetition,

@@ -15,6 +15,12 @@ p {
     cursor: default;
 }
 
+body {
+    background-image: url(https://www.house.gov/sites/default/themes/housegov/images/bgBody_lg.jpg);
+    background-position: 50% 200px;
+    background-repeat: no-repeat;
+}
+
 /* HEADER */
 #navMain {
     height: 30px;
@@ -48,6 +54,7 @@ p {
     color: whitesmoke;
     text-shadow: 0 0 10px #000000;
     background-image: url(./assets/flag.jpeg);
+    background-size: 50%;
 }
 
 #logoImgDiv {
@@ -112,7 +119,7 @@ p {
 main {
     display: flex;
     width: 1000px;
-    background-color: whitesmoke;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     margin: 0 auto;
 }
 
@@ -123,6 +130,17 @@ main h4,
 main p {
     margin-top: 10px;
     margin-bottom: 10px;
+    font-weight: 500;
+}
+
+main h1 {
+    font-size: 1.75rem;
+    color: #870100;
+}
+
+main h2 {
+    /* font-size: 1.75rem; */
+    color: #2a548c;
 }
 
 #sidebar {
@@ -137,9 +155,11 @@ footer {
 }
 
 .sectionDiv {
-    border: 1px solid black;
-    min-width: 750px;
-    padding: 0 20px;
+    border-bottom: 1px solid silver;
+    min-width: 710px;
+    padding-bottom: 10px;
+    margin: 0 20px;
+    text-align: justify;
 }
 
 /* USER CARD */
@@ -184,6 +204,13 @@ footer {
 /* new representative */
 .longTxt {
     width: 80%;
+}
+
+#stepsDiv {
+    background-image: url(./assets/vacancy.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 350px;
 }
 
 /* PETITION PAGE */
@@ -279,10 +306,14 @@ footer {
 }
 
 .topicLink {
-    color: rgb(89, 89, 89);
+    color: #2a548c;
     text-decoration: none;
     position: relative;
     bottom: -12px;
+}
+
+.topicLink:hover {
+    text-decoration: underline;
 }
 
 #petitionDate {
@@ -331,6 +362,14 @@ footer {
 }
 
 /* REPRESENTATIVE TEMPLATE */
+#representativesImg {
+    background-image: url(./assets/representatives.jpeg);
+    height: 300px;
+    background-size: cover;
+    margin: 0 -20px;
+    background-position: center -190px;
+}
+
 .representativeDiv {
     background: linear-gradient(#eee, #fff 50%);
     border-radius: 5px;
@@ -356,6 +395,16 @@ footer {
 
 .representativeDiv div {
     margin: 0 30px 0 10px;
+}
+
+/* VOTE NOW */
+
+#voteImg {
+    background-image: url(./assets/chamber.webp);
+    height: 300px;
+    background-size: cover;
+    margin: 0 -20px;
+    background-position: center -90px;
 }
 
 /* ANIMATIONS */

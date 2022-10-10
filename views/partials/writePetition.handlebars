@@ -13,11 +13,13 @@
             <input type="text" id="petitionTxt" name="petition" placeholder=" Write your petition here" />
             <h3>Add your signature:</h3>
             <p>{{#if error_signature}}<font color="red"> You must sign your petition!</font>{{/if}}</p>
+
             <canvas id="canvas" width="500" height="200"></canvas>
             <input id="hiddenInput" type="hidden" name="signature_url" value="" />
             <p><a href="#" id="clear-button">Clear Signature</a></p>
-            <h4>Topic (optional):</h4>
-            <input list="topic" name="topic" placeholder=" Topic">
+            
+            <h3>Topic (optional):</h3>
+            <input type="text" list="topic" name="topic" placeholder=" Topic">
             <div>
                 <datalist id="topic">
                     <option value="Public services">

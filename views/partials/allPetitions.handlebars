@@ -1,13 +1,27 @@
-<h2>Here are all petitions</h2>
-<ul>
-    {{#petitions}}
-        <li>
-            <div>
-                {{first_name}}
-                {{last_name}}
-                <img src="{{signature_url}}" alt="" />
+{{#petitions}}
+    <div class="petitionDiv">
+        <div class="petitionUserDiv">
+            <a href="{{user_page}}"><img id="userImg" src={{#if image_url}}{{image_url}}{{else}}"../assets/default_user.jpeg"{{/if}} alt="signature" /></a>
+            <h4 id="userTxt">{{first_name}} {{last_name}}</h4>
+        </div>
+        <div class="petitionContent">
+            {{#if canDelete}}
+                <form action="/deletepetition" method="POST">
+                    <input id="deleteButton" class="log" type="submit" value=" delete ❌ " />
+                    <input type="hidden" name="petition_id" value="{{petition_id}}" />
+                </form>
+            {{/if}}
+            <div class="petitionTitle">
+            <h3>{{title}}</h3>
+                <div>
+                    {{#if topic}}<a class="topicLink" href="/topic/{{topic}}">({{topic}})</a>{{/if}}
+                </div>
             </div>
-        </li>
-
-    {{/petitions}}
-</ul>
+            <p>{{petition}}</p>
+        </div>
+        <div id="petitionDate">
+        <p>{{created_at}}</p>
+        <img id="signatureImg" src="{{signature_url}}" alt="signature">
+        </div>
+    </div>
+{{/petitions}}

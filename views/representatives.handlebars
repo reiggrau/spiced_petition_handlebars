@@ -1,5 +1,6 @@
 <div class="sectionDiv">
-    <h1>HOUSE REPRESENTATIVES</h1>
+    <div id="representativesImg"></div>
+    <h1>The Representatives</h1>
     <p>This is an explanation of the house representatives.</p>
     <p>A list of representatives should be shown below.</p>
 </div>
@@ -8,7 +9,7 @@
         <img id="representativeImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
         <div>
             <h3>{{first_name}} {{last_name}}</h3>
-            <p>{{quote}}</p>
+            <p>{{#if quote }}"{{quote}}"{{/if}}</p>
             <p>{{party}}</p>
         </div>
     </div>

@@ -16,6 +16,7 @@ const db = require("./db");
 
 // Encryption
 const bcrypt = require("bcryptjs");
+const { equal } = require("assert");
 
 // STATIC
 
@@ -131,11 +132,6 @@ app.post("/profile", (req, res) => {
     console.log("EDIT PROFILE. req.body:", req.body);
     // VALIDATION:
     // Validate values are correct format and safe > else render with error
-    //
-    // UPDATE TABLES:
-    //
-    //
-    // redirect to petition page
 
     let dataObj;
     let renderObj;
@@ -143,7 +139,14 @@ app.post("/profile", (req, res) => {
     if (!req.body.first_name || !req.body.last_name || !req.body.email) {
         renderObj = { error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, ...req.session };
         res.render("profile", { page: "Profile", ...renderObj });
+    } else if (!!req.body.user_page && req.body.user_page.indexOf("http://") != 0 && req.body.user_page.indexOf("https://") != 0) {
+        renderObj = { error_user_page: true, ...req.session };
+        res.render("profile", { page: "Profile", ...renderObj });
     } else {
+        let url = req.body.user_page;
+        console.log("req.body.user_page :", req.body.user_page);
+        console.log('req.body.user_page.indexOf("ttp") :', req.body.user_page.indexOf("guashj"));
+        // Check if url is valid
         db.checkEmail(req.body.email)
             .then((data) => {
                 if (data.length && data[0].id != req.session.id) {
@@ -185,6 +188,21 @@ app.post("/profile", (req, res) => {
     }
 });
 
+app.post("/deleteuser", (req, res) => {
+    console.log("DELETE USER:", req.body);
+
+    if (req.session.id == req.body.user_id) {
+        db.deleteProfile(req.body.user_id).then(() => {
+            db.deleteRepresentative(req.body.user_id).then(() => {
+                req.session = null;
+                res.redirect("/");
+            });
+        });
+    } else {
+        res.redirect("/");
+    }
+});
+
 // PETITIONS PAGE
 app.get("/petitions", (req, res) => {
     res.render("petitions", { page: "Petitions", ...req.session });
@@ -198,7 +216,7 @@ app.post("/petitions", (req, res) => {
         res.render("petitions", { page: "Petitions", ...renderObj });
     } else {
         db.createPetition(req.session.id, req.body.title, req.body.petition, req.body.signature_url, req.body.topic)
-            .then((data) => {
+            .then(() => {
                 res.redirect("/thankyou");
             })
             .catch((error) => {
@@ -276,6 +294,26 @@ app.get("/votenow", (req, res) => {
         });
 });
 
+// TOPIC
+app.get("/topic/:topic", (req, res) => {
+    console.log("TOPIC. req.params.topic :", req.params.topic);
+    db.getAllPetitionsByTopic(req.params.topic)
+        .then((data) => {
+            console.log("data :", data);
+            for (let element of data) {
+                element.petition_id = element.id;
+                delete element.id;
+                element.canDelete = element.user_id == req.session.id;
+                element.created_at = element.created_at.toString().split(" GMT")[0];
+            }
+            res.render("topic", { title: "Topic", topic: data[0].topic, petitions: data, ...req.session });
+        })
+        .catch((error) => {
+            console.log("error: ", error);
+            res.redirect("/");
+        });
+});
+
 // GET /profile
 // renders form to input profile info
 
@@ -298,3 +336,5 @@ app.get("/votenow", (req, res) => {
 app.listen(PORT, () => {
     console.log(`Checkpoint 0: Listening on port: ${PORT}`);
 });
+
+// req.session.id should be renamed to userId

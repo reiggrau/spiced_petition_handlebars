@@ -1,4 +1,6 @@
 // SETUP
+console.log("canvas.js linked!");
+
 const canvas = document.querySelector("canvas");
 const hiddenInput = document.getElementById("hiddenInput");
 const clearButton = document.querySelector("#clear-button");

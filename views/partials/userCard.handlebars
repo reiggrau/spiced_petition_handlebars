@@ -1,7 +1,7 @@
 <div id="userCard">
     {{#if id}}
         <div>
-            <img src={{#if image_url}}{{image_url}}{{else}}"./assets/user_white.png"{{/if}} alt="" />
+            <img src={{#if image_url}}{{image_url}}{{else}}"../assets/user_white.png"{{/if}} alt="" />
             <h3>{{first_name}} {{last_name}}</h3>
             <p>{{#if quote }}"{{quote}}"{{/if}}</p>
             <div class="flexDiv">
@@ -11,8 +11,8 @@
         </div>
     {{else}}
         <div>
-            <img src="./assets/user_white.png" alt="" />
-            <h3>Guest user</h3>
+            <img src="../assets/user_white.png" alt="" />
+            <h3>Guest</h3>
             <form action="/login" method="POST">
                 <div>
                     <p>{{#if error_email_login}}<font color="red">Wrong email!</font>{{/if}}</p>
