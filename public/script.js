@@ -18,7 +18,7 @@
 
             data.forEach(function (item) {
                 let num = styleCounter % 4;
-                htmlResults += `<a id="style${styleCounter % 4}" class="headline" href=${item.url}>${item.text}<b> - ${newspapers[num]}<b></a>`;
+                htmlResults += `<a id="style${styleCounter % 4}" class="headline" href=${item.url}>${item.text}<b> - ${newspapers[num]}</b></a>`;
                 styleCounter++;
             });
 

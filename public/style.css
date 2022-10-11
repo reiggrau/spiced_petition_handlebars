@@ -75,6 +75,18 @@ body {
     text-decoration: underline;
 }
 
+#imagesDiv {
+    position: absolute;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hands {
+    height: 140px;
+    opacity: 0.75;
+}
+
 #logoDiv {
     height: 140px;
     width: 100%;
@@ -90,8 +102,6 @@ body {
 #logoImgDiv {
     width: 440px;
     height: 140px;
-    margin: auto 0;
-    position: absolute;
     overflow: hidden;
 }
 
@@ -149,8 +159,8 @@ body {
 main {
     display: flex;
     width: 1000px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     margin: 0 auto;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 main h1,
@@ -175,7 +185,7 @@ main h2 {
 
 #sidebar {
     min-width: 250px;
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 footer {
@@ -184,7 +194,7 @@ footer {
     margin: 0 auto;
     line-height: 20px;
     padding: 20px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); */
 }
 
 footer p {
@@ -204,11 +214,14 @@ footer p {
 /* USER CARD */
 #userCard {
     width: 230px;
-    background-color: whitesmoke;
     padding: 15px;
     min-height: 350px;
     margin: 10px 10px;
     text-align: center;
+    border: 1px solid silver;
+    background: linear-gradient(#eee, #fff 50%);
+    border-radius: 5px;
+    box-shadow: 0 3px 10px #ddd;
 }
 
 #userCard img {
@@ -251,7 +264,6 @@ footer p {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: 220px;
-
     text-shadow: 0 0 10px white;
 }
 
@@ -294,6 +306,14 @@ footer p {
     width: 60px;
     height: 60px;
     border: 1px solid grey;
+}
+
+.miniText {
+    overflow: hidden;
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+    max-width: 580px;
 }
 
 #deleteButton {
@@ -371,6 +391,7 @@ footer p {
     position: relative;
     bottom: 60px;
     right: 0;
+    opacity: 0.6;
 }
 
 /* MINI TEMPLATE */
