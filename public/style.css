@@ -20,6 +20,36 @@ body {
     background-position: 50% 200px;
     background-repeat: no-repeat;
 }
+/* TICKER */
+#headlines {
+    line-height: 25px;
+    white-space: nowrap;
+    position: absolute;
+    left: 100%;
+}
+
+#headlines a {
+    padding-right: 30px;
+    color: black;
+    text-decoration: none;
+    font-size: large;
+}
+
+#style0 {
+    font-family: "Droid Serif", serif;
+}
+
+#style1 {
+    font-family: "Playfair Display", serif;
+}
+
+#style2 {
+    font-family: "Times New Roman", serif;
+}
+
+#style3 {
+    font-family: Georgia, serif;
+}
 
 /* HEADER */
 #navMain {
@@ -145,13 +175,22 @@ main h2 {
 
 #sidebar {
     min-width: 250px;
-    background-color: silver;
+    background-color: whitesmoke;
 }
 
 footer {
-    background-color: blanchedalmond;
+    background-color: whitesmoke;
     width: 1000px;
     margin: 0 auto;
+    line-height: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+footer p {
+    font-family: sans-serif;
+    color: #2a548c;
+    font-size: small;
 }
 
 .sectionDiv {
@@ -177,7 +216,7 @@ footer {
     width: 200px;
     height: 200px;
     object-fit: cover;
-    border: 3px solid silver;
+    border: 1px solid silver;
 }
 
 #password {
