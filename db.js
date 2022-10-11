@@ -74,7 +74,9 @@ function editProfile(user_id, image_url, quote, party, user_page) {
     const sql = `
     INSERT INTO profiles (user_id, image_url, quote, party, user_page)
     VALUES ($1, $2, $3, $4, $5)
+    
     ON CONFLICT (user_id) DO
+
     UPDATE SET image_url = $2, quote = $3, party = $4, user_page = $5
     RETURNING image_url, quote, party, user_page
     ;`;
@@ -126,6 +128,17 @@ function deletePetition(id) {
     ;`;
     return db
         .query(sql, [id])
+        .then((result) => result.rows)
+        .catch((error) => console.log("Error in createPetition:", error));
+}
+
+function deleteAllPetitions(user_id) {
+    const sql = `
+    DELETE FROM petitions
+    WHERE user_id = $1
+    ;`;
+    return db
+        .query(sql, [user_id])
         .then((result) => result.rows)
         .catch((error) => console.log("Error in createPetition:", error));
 }
@@ -234,6 +247,7 @@ module.exports = {
     deleteProfile,
     createPetition,
     deletePetition,
+    deleteAllPetitions,
     getLastPetition,
     countPetitions,
     countRepresentatives,

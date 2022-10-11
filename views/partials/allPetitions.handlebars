@@ -7,8 +7,8 @@
         <div class="petitionContent">
             {{#if canDelete}}
                 <form action="/deletepetition" method="POST">
-                    <input id="deleteButton" class="log" type="submit" value=" delete ❌ " />
                     <input type="hidden" name="petition_id" value="{{petition_id}}" />
+                    <input id="deleteButton" class="log" type="submit" value=" delete ❌ " />
                 </form>
             {{/if}}
             <div class="petitionTitle">

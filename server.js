@@ -16,7 +16,6 @@ const db = require("./db");
 
 // Encryption
 const bcrypt = require("bcryptjs");
-const { equal } = require("assert");
 
 // STATIC
 
@@ -192,10 +191,12 @@ app.post("/deleteuser", (req, res) => {
     console.log("DELETE USER:", req.body);
 
     if (req.session.id == req.body.user_id) {
-        db.deleteProfile(req.body.user_id).then(() => {
-            db.deleteRepresentative(req.body.user_id).then(() => {
-                req.session = null;
-                res.redirect("/");
+        db.deleteAllPetitions(req.body.user_id).then(() => {
+            db.deleteProfile(req.body.user_id).then(() => {
+                db.deleteRepresentative(req.body.user_id).then(() => {
+                    req.session = null;
+                    res.redirect("/");
+                });
             });
         });
     } else {
@@ -267,6 +268,10 @@ app.post("/deletepetition", (req, res) => {
 app.get("/representatives", (req, res) => {
     db.getAllRepresentatives()
         .then((data) => {
+            console.log("data :", data);
+            for (let element of data) {
+                element.created_at = element.created_at.toString().split(" ").slice(0, 4).join(" ");
+            }
             res.render("representatives", { page: "Representatives", representatives: data, ...req.session });
         })
         .catch((error) => {
@@ -338,3 +343,13 @@ app.listen(PORT, () => {
 });
 
 // req.session.id should be renamed to userId
+
+app.post("/edit", (req, res) => {
+    db.editUser(a, b, c, id)
+        .then(() => {
+            return db.editProfile(d, e, f, id);
+        })
+        .then(() => {
+            // Redirect
+        });
+});

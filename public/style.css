@@ -164,6 +164,7 @@ footer {
 
 /* USER CARD */
 #userCard {
+    width: 230px;
     background-color: whitesmoke;
     padding: 15px;
     min-height: 350px;
@@ -210,7 +211,9 @@ footer {
     background-image: url(./assets/vacancy.png);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: 350px;
+    background-position: 220px;
+
+    text-shadow: 0 0 10px white;
 }
 
 /* PETITION PAGE */
@@ -362,6 +365,7 @@ footer {
 }
 
 /* REPRESENTATIVE TEMPLATE */
+
 #representativesImg {
     background-image: url(./assets/representatives.jpeg);
     height: 300px;
@@ -370,31 +374,9 @@ footer {
     background-position: center -190px;
 }
 
-.representativeDiv {
-    background: linear-gradient(#eee, #fff 50%);
-    border-radius: 5px;
-    width: 95%;
-    max-height: 200px;
-    margin: 10px auto;
-    border: 1px solid #c5c5c5;
-    box-shadow: 0 3px 10px #ddd;
+#representativesDiv {
     display: flex;
-    text-align: left;
-}
-
-#representativeImg {
-    min-width: 180px;
-    min-height: 180px;
-    max-width: 180px;
-    max-height: 180px;
-    margin: 10px;
-    object-fit: cover;
-    border: 1px solid grey;
-    background-color: grey;
-}
-
-.representativeDiv div {
-    margin: 0 30px 0 10px;
+    flex-wrap: wrap;
 }
 
 /* VOTE NOW */

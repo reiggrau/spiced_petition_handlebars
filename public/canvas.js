@@ -1,9 +1,10 @@
-// SETUP
 console.log("canvas.js linked!");
 
+// SETUP
 const canvas = document.querySelector("canvas");
 const hiddenInput = document.getElementById("hiddenInput");
 const clearButton = document.querySelector("#clear-button");
+
 const ctx = canvas.getContext("2d");
 
 // VARIABLES

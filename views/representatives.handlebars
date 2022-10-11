@@ -4,16 +4,19 @@
     <p>This is an explanation of the house representatives.</p>
     <p>A list of representatives should be shown below.</p>
 </div>
+<div id="representativesDiv">
 {{#representatives}}
-<div class="representativeDiv">
-        <img id="representativeImg" src={{#if image_url}}{{image_url}}{{else}}"./assets/default_user.jpeg"{{/if}} alt="signature" />
+    <div id="userCard">
         <div>
+            <img src={{#if image_url}}{{image_url}}{{else}}"../assets/user_white.png"{{/if}} alt="" />
             <h3>{{first_name}} {{last_name}}</h3>
             <p>{{#if quote }}"{{quote}}"{{/if}}</p>
             <p>{{party}}</p>
+            <p>Joined: {{created_at}}</p>
         </div>
     </div>
 {{/representatives}}
+</div>
 
 {{!-- {{#each representatives}} --}}
 {{!-- {{this}} --}}

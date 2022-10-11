@@ -14,10 +14,12 @@
             <h3>Add your signature:</h3>
             <p>{{#if error_signature}}<font color="red"> You must sign your petition!</font>{{/if}}</p>
 
+            {{!-- CANVAS --}}
             <canvas id="canvas" width="500" height="200"></canvas>
             <input id="hiddenInput" type="hidden" name="signature_url" value="" />
             <p><a href="#" id="clear-button">Clear Signature</a></p>
-            
+            {{!-- /CANVAS --}}
+
             <h3>Topic (optional):</h3>
             <input type="text" list="topic" name="topic" placeholder=" Topic">
             <div>
