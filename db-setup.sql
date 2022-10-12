@@ -28,6 +28,9 @@ CREATE TABLE petitions (
     petition VARCHAR(510) NOT NULL,
     signature_url VARCHAR NOT NULL,
     topic VARCHAR(255),
+    accept INT,
+    pass INT,
+    reject INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

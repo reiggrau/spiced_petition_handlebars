@@ -25,15 +25,15 @@
         <div id="voteButtons">
             <form action="/accept" method="POST">
                 <input type="hidden" name="petition_id" value="{{petition_id}}" />
-                <input class="voteButton" class="log" type="submit" value=" 🟢 " />
+                <input class="voteButton" class="log" type="submit" value=" {{accept}} 🟢 " />
             </form>
             <form action="/pass" method="POST">
                 <input type="hidden" name="petition_id" value="{{petition_id}}" />
-                <input class="voteButton" class="log" type="submit" value=" 🟡 " />
+                <input class="voteButton" class="log" type="submit" value=" {{pass}} 🟡 " />
             </form>
-            <form action="/refuse" method="POST">
+            <form action="/reject" method="POST">
                 <input type="hidden" name="petition_id" value="{{petition_id}}" />
-                <input class="voteButton" class="log" type="submit" value=" 🔴 " />
+                <input class="voteButton" class="log" type="submit" value=" {{reject}} 🔴 " />
             </form>
         </div>
         </div>

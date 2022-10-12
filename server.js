@@ -335,6 +335,27 @@ app.get("/votenow", (req, res) => {
         });
 });
 
+app.post("/accept", (req, res) => {
+    console.log("ACCEPT PETITION :", req.body.petition_id);
+    db.acceptPetition(req.body.petition_id).then(() => {
+        res.redirect("/votenow");
+    });
+});
+
+app.post("/pass", (req, res) => {
+    console.log("PASS PETITION :", req.body.petition_id);
+    db.passPetition(req.body.petition_id).then(() => {
+        res.redirect("/votenow");
+    });
+});
+
+app.post("/reject", (req, res) => {
+    console.log("REJECT PETITION :", req.body.petition_id);
+    db.rejectPetition(req.body.petition_id).then(() => {
+        res.redirect("/votenow");
+    });
+});
+
 // TOPIC
 app.get("/topic/:topic", (req, res) => {
     console.log("TOPIC. req.params.topic :", req.params.topic);

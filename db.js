@@ -143,6 +143,42 @@ function deleteAllPetitions(user_id) {
         .catch((error) => console.log("Error in createPetition:", error));
 }
 
+function acceptPetition(id) {
+    const sql = `
+    UPDATE petitions
+    SET accept = accept + 1
+    WHERE id = $1
+    ;`;
+    return db
+        .query(sql, [id])
+        .then((result) => result.rows)
+        .catch((error) => console.log("Error in createPetition:", error));
+}
+
+function passPetition(id) {
+    const sql = `
+    UPDATE petitions
+    SET pass = pass + 1
+    WHERE id = $1
+    ;`;
+    return db
+        .query(sql, [id])
+        .then((result) => result.rows)
+        .catch((error) => console.log("Error in createPetition:", error));
+}
+
+function rejectPetition(id) {
+    const sql = `
+    UPDATE petitions
+    SET reject = reject + 1
+    WHERE id = $1
+    ;`;
+    return db
+        .query(sql, [id])
+        .then((result) => result.rows)
+        .catch((error) => console.log("Error in createPetition:", error));
+}
+
 // THANK YOU
 function getLastPetition(userId) {
     const sql = `
@@ -201,7 +237,7 @@ function getAllRepresentatives() {
 // VOTE NOW PAGE
 function getAllPetitions() {
     const sql = `
-    SELECT petitions.id, petitions.user_id, title, petition, signature_url, topic, petitions.created_at, first_name, last_name, image_url, quote, party, user_page 
+    SELECT petitions.id, petitions.user_id, title, petition, signature_url, topic, petitions.created_at, first_name, last_name, image_url, quote, party, user_page, accept, pass, reject 
     FROM petitions
     LEFT OUTER JOIN representatives ON petitions.user_id = representatives.id
     LEFT OUTER JOIN profiles ON petitions.user_id = profiles.user_id
@@ -248,6 +284,9 @@ module.exports = {
     createPetition,
     deletePetition,
     deleteAllPetitions,
+    acceptPetition,
+    passPetition,
+    rejectPetition,
     getLastPetition,
     countPetitions,
     countRepresentatives,
