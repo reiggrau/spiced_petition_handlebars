@@ -22,6 +22,20 @@
         <div id="petitionDate">
         <p>{{created_at}}</p>
         <img id="signatureImg" src="{{signature_url}}" alt="signature">
+        <div id="voteButtons">
+            <form action="/accept" method="POST">
+                <input type="hidden" name="petition_id" value="{{petition_id}}" />
+                <input class="voteButton" class="log" type="submit" value=" 🟢 " />
+            </form>
+            <form action="/pass" method="POST">
+                <input type="hidden" name="petition_id" value="{{petition_id}}" />
+                <input class="voteButton" class="log" type="submit" value=" 🟡 " />
+            </form>
+            <form action="/refuse" method="POST">
+                <input type="hidden" name="petition_id" value="{{petition_id}}" />
+                <input class="voteButton" class="log" type="submit" value=" 🔴 " />
+            </form>
+        </div>
         </div>
     </div>
 {{/petitions}}

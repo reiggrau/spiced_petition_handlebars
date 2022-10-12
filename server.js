@@ -29,6 +29,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Variables
 const screen_nameArr = ["TheOnion"];
 
+const namesRegex = /^[a-z ,.'-]+$/i; // names check
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; // email check
+
 // STARTUP
 
 // db.getAllPetitions().then((rows) => {
@@ -84,6 +87,9 @@ app.post("/", (req, res) => {
     // Check if empty fields
     if (!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password) {
         renderObj = { error_first_name: !req.body.first_name, error_last_name: !req.body.last_name, error_email: !req.body.email, error_password: !req.body.password };
+        res.render("welcome", { page: "Welcome", ...renderObj });
+    } else if (!req.body.email.match(emailRegex) || !req.body.first_name.match(namesRegex) || !req.body.last_name.match(namesRegex)) {
+        renderObj = { error_email_regex: !req.body.email.match(emailRegex), error_first_regex: !req.body.first_name.match(namesRegex), error_last_regex: !req.body.last_name.match(namesRegex) };
         res.render("welcome", { page: "Welcome", ...renderObj });
     } else {
         // Check if email already exists
@@ -167,6 +173,9 @@ app.post("/profile", (req, res) => {
         res.render("profile", { page: "Profile", ...renderObj });
     } else if (!!req.body.user_page && req.body.user_page.indexOf("http://") != 0 && req.body.user_page.indexOf("https://") != 0) {
         renderObj = { error_user_page: true, ...req.session };
+        res.render("profile", { page: "Profile", ...renderObj });
+    } else if (!req.body.email.match(emailRegex) || !req.body.first_name.match(namesRegex) || !req.body.last_name.match(namesRegex)) {
+        renderObj = { error_email_regex: !req.body.email.match(emailRegex), error_first_regex: !req.body.first_name.match(namesRegex), error_last_regex: !req.body.last_name.match(namesRegex), ...req.session };
         res.render("profile", { page: "Profile", ...renderObj });
     } else {
         let url = req.body.user_page;

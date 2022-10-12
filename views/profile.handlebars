@@ -7,12 +7,12 @@
     <p>Change anything you want from your profile and let the PR team do the rest.</p>
     <form action="/profile" method="POST">
         <h4>Name:</h4>
-        <p>{{#if error_first_name}}<font color="red"> You must write a first name!</font>{{/if}}</p>
+        <p>{{#if error_first_name}}<font color="red"> You must write a first name!</font>{{else if error_first_regex}}<font color="red"> Wrong first name format!</font>{{/if}}</p>
         <input type="text" name="first_name" placeholder=" First Name" value="{{first_name}}" />
-        <p>{{#if error_last_name}}<font color="red"> You must write a last name!</font>{{/if}}</p>
+        <p>{{#if error_last_name}}<font color="red"> You must write a last name!</font>{{else if error_last_regex}}<font color="red"> Wrong first name format!</font>{{/if}}</p>
         <input type="text" name="last_name" placeholder=" Last Name" value="{{last_name}}" />
         <h4>email and password:</h4>
-        <p>{{#if error_email}}<font color="red"> You must write an email!</font>{{else if error_email_used}}<font color="red"> Email already in use!</font>{{/if}}</p>
+        <p>{{#if error_email}}<font color="red"> You must write an email!</font>{{else if error_email_used}}<font color="red"> Email already in use!</font>{{else if error_email_regex}}<font color="red"> Wrong email format!</font>{{/if}}</p>
         <input type="email" name="email" placeholder=" example@email.com" value="{{email}}" />
         <p>{{#if error_password}}<font color="red"> You must write a password!</font>{{/if}}</p>
         <input type="password" name="password" placeholder=" password" />
