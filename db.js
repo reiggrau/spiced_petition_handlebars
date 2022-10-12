@@ -111,8 +111,8 @@ function deleteProfile(user_id) {
 // PETITIONS
 function createPetition(user_id, title, petition, signature_url, topic) {
     const sql = `
-    INSERT INTO petitions (user_id, title, petition, signature_url, topic)
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO petitions (user_id, title, petition, signature_url, topic, accept, pass, reject)
+    VALUES ($1, $2, $3, $4, $5, 0, 0, 0)
     RETURNING *
     ;`;
     return db

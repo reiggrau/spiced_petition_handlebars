@@ -22,6 +22,7 @@
         <div id="petitionDate">
         <p>{{created_at}}</p>
         <img id="signatureImg" src="{{signature_url}}" alt="signature">
+        
         <div id="voteButtons">
             <form action="/accept" method="POST">
                 <input type="hidden" name="petition_id" value="{{petition_id}}" />
