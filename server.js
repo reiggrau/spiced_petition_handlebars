@@ -1,6 +1,7 @@
 // SETUP
 const PORT = 8000; //Set the port to be used
 const path = require("path"); // Require 'path'
+
 const express = require("express"); // require express
 const app = express(); // create a new instance of express
 
@@ -8,8 +9,8 @@ const cookieSession = require("cookie-session");
 
 // Handlebars setup
 const { engine } = require("express-handlebars");
-app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
+app.engine("handlebars", engine());
 
 // Database
 const db = require("./db");
@@ -75,7 +76,7 @@ app.get("/headlines.json", (req, res) => {
 // HOME PAGE
 app.get("/", (req, res) => {
     console.log("req.session :", req.session);
-    res.render("welcome", { page: "Home page", ...req.session });
+    res.render("welcome", { layout: "main", page: "Home page", ...req.session });
 });
 
 app.post("/", (req, res) => {

@@ -1,2 +1,0 @@
-// PART 5
-// Allow users to edit their profile
