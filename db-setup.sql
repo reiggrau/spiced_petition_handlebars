@@ -17,7 +17,8 @@ CREATE TABLE profiles (
     user_id INTEGER NOT NULL UNIQUE REFERENCES representatives (id),
     image_url VARCHAR(255),
     quote VARCHAR(255),
-    party VARCHAR(255)
+    party VARCHAR(255),
+    user_page VARCHAR(255)
 );
 
 

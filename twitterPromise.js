@@ -1,6 +1,9 @@
 const https = require("https");
 
-const { twitterKey, twitterSecret } = require("./secrets");
+// const { twitterKey, twitterSecret } = require("./secrets");
+
+const twitterKey = process.env.TWITTER_KEY;
+const twitterSecret = process.env.TWITTER_SECRET;
 
 const authorization = `Basic ${Buffer.from(twitterKey + ":" + twitterSecret).toString("base64")}`;
 

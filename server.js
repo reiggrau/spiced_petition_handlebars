@@ -37,9 +37,9 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0
 // db.getAllPetitions().then((rows) => {
 //     console.log("Petitions:", rows);
 // });
-db.getAllRepresentatives().then((rows) => {
-    console.log("Representatives:", rows);
-});
+// db.getAllRepresentatives().then((rows) => {
+//     console.log("Representatives:", rows);
+// });
 
 // MIDDLEWARES
 
@@ -60,11 +60,11 @@ app.get("/headlines.json", (req, res) => {
 
     getToken // 1- get the token
         .then((token) => {
-            console.log("token:", token);
+            // console.log("token:", token);
 
             Promise.all(screen_nameArr.map((item) => getTweetsPromise(token, item))) // 2- with the token, make a request for tweets
                 .then((results) => {
-                    console.log("filterTweets(results) :", filterTweets(results));
+                    // console.log("filterTweets(results) :", filterTweets(results));
 
                     res.json(filterTweets(results)); // 3- once we receive the tweets, filter them // 4- send filtered tweets to the client as JSON
                 })
@@ -179,8 +179,8 @@ app.post("/profile", (req, res) => {
         res.render("profile", { page: "Profile", ...renderObj });
     } else {
         let url = req.body.user_page;
-        console.log("req.body.user_page :", req.body.user_page);
-        console.log('req.body.user_page.indexOf("ttp") :', req.body.user_page.indexOf("guashj"));
+        // console.log("req.body.user_page :", req.body.user_page);
+        // console.log('req.body.user_page.indexOf("ttp") :', req.body.user_page.indexOf("guashj"));
         // Check if url is valid
         db.checkEmail(req.body.email)
             .then((data) => {
@@ -304,7 +304,7 @@ app.post("/deletepetition", (req, res) => {
 app.get("/representatives", (req, res) => {
     db.getAllRepresentatives()
         .then((data) => {
-            console.log("data :", data);
+            // console.log("data :", data);
             for (let element of data) {
                 element.created_at = element.created_at.toString().split(" ").slice(0, 4).join(" ");
             }
@@ -376,37 +376,7 @@ app.get("/topic/:topic", (req, res) => {
         });
 });
 
-// GET /profile
-// renders form to input profile info
-
-// POST /profile
-// Validate: age must be a number
-// validate: city must be text
-// validate: homepage is valid URL
-//      must start with http
-// save form data to database
-
-// GET /petitions/party
-// grab the party from the url
-// getAllPetitionsByParty
-
-// EXAMPLE
-
-// db.createCity();
-
 // INITIALIZATION
 app.listen(PORT, () => {
     console.log(`Checkpoint 0: Listening on port: ${PORT}`);
-});
-
-// req.session.id should be renamed to userId
-
-app.post("/edit", (req, res) => {
-    db.editUser(a, b, c, id)
-        .then(() => {
-            return db.editProfile(d, e, f, id);
-        })
-        .then(() => {
-            // Redirect
-        });
 });
